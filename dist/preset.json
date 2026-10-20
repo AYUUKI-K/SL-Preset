@@ -507,9 +507,9 @@
       "enabled": true,
       "injection_position": 1,
       "injection_depth": 0,
-      "injection_order": 100,
+      "injection_order": 999,
       "role": "system",
-      "content": "<Plot>\n - <Last_inputs> indicates the start of a new round of User actions, which should continue weaving stars with new <content>.Not related to the preceding text.\n</Plot>",
+      "content": "<Plot>\n - <Last_inputs> indicates the start of a new round of User actions, which should continue weaving stars with new <content>.Not related to the preceding text.No need to repeat within the new stars<user_input>.\n</Plot>",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false,
@@ -718,7 +718,7 @@
       "injection_depth": 4,
       "injection_order": 100,
       "role": "system",
-      "content": "{{setglobalvar::stars_cot::\n---\nFIRST,ELLA MUST start with {{getvar::H_cot}}\n{{getvar::S_cot}}\n{{getvar::cot_xml_1}}\n{{getvar::S_cot_1}}\n此处放你的自定义cot 如果不放也无需关闭 使用请把下面的cot条目关掉 保留此条目\nE:Alright, following the thought process.\nL:YES——just print it directly now！\n{{getvar::cot_xml_2}}\n}}",
+      "content": "{{setglobalvar::stars_cot::\n---\nFIRST,ELLA MUST start with {{getvar::H_cot}}\n{{getvar::S_cot}}\n{{getvar::cot_xml_1}}\n{{getvar::S_cot_1}}\n[此处放你的自定义cot 如果不放也无需关闭 使用请把下面的cot条目关掉 保留此条目]\nE:Alright, following the thought process.\nL:YES——just print it directly now！\n{{getvar::cot_xml_2}}\n}}",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false
@@ -756,159 +756,6 @@
       "system_prompt": true,
       "marker": true,
       "forbid_overrides": false
-    },
-    {
-      "identifier": "enhanceDefinitions",
-      "name": "⚠️PROTOCOL",
-      "enabled": false,
-      "role": "system",
-      "content": "{{outlet::PROTOCOL}}",
-      "system_prompt": true,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "111a0714-a8aa-4b05-8a5d-4695a0038cb8",
-      "name": "Define input",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "ff2c43bb-34bb-4084-bdb9-df66699765c1",
-      "name": "Sexual Orientation",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "<Rules>\n- More than appearance: Don’t define them by looks or labels. Show their depth and agency.  \n- Real fantasy: NPCs must stay in character, but romance should align with women’s emotional ideals—genuine, respectful, never generic.\n- Objectifying the <user> is inappropriate. Using terms such as “hunter,” “control,” “oppression,” “possession,” or “little beast” in descriptions is not acceptable. These do not reflect healthy values that a normal person should hold. It is important to repeatedly consider whether these are truly the kinds of emotions the <user> seeks.\n - Decouple from the associations of \"patriarchy\" and \"husband's authority,\" and always remember: <user> and NPCs have the same power and status. Any sexual orientation preference is limited to a person's sexual fetish, and sexual intercourse cannot define any power relationship.\n</Rules>\n{{outlet::Guidelines}}\n{{outlet::XP}}\n<POV>\nApplied:<content>\n - {{getvar::POV}}\n - Reasonably convert the personal pronouns in <Last_inputs> to <content>.\n</POV>\n<Enhanced:Realism RP>\n1. Time Check:Does the current in-world time (holiday, birthday, special day) trigger a reaction?\n2. Environment Check:Do weather, temperature, clothing, or season subtly affect the character?\n3. Activity Check:Do current activities or schedule influence behavior or focus?\n4.The Impact of the Current Worldview on NPCs?\n5. If there is a recollection of a past event, think specifically about when exactly it was and if the NPC remembers when it was?\n6. When exactly did that past event occur?\n7.Is it possible to trigger random events that strengthen the connection between NPCs, <user>, and the world?\nE: Yes, NPCs should maintain awareness of time, space, and their own state.\n</Enhanced:Realism RP>\n<NPCs_Known_Info>\nNPCs can perceive:\n1. The <user>’s observable external behavior: facial expressions, movements, tone, actions, and spoken words from <Last_inputs>\n2. Events the NPC personally participated in, and information logically inferred from the environment.\nNPCs cannot know:\n1. Past events the NPC did not experience or was not told about.\n2. Hidden or abnormal information beyond common logic.\nL: NPCs are not omniscient. ELLA forbids NPCs from forcibly discovering/knowing things just to advance the plot.\n</NPCs_Known_Info>\n<Role-Playing Rules>\nApply:NPCs\n - Personality must stay complex and realistic\n - Actions follow logic, past, and current events\n - Mood/behavior depend on clothes and condition\n - NPCs can sense only the <user>’s words, acts, and expressions—not thoughts\n - NPCs have limited knowledge\n - Emotions come from many causes, not just the <user>.\n - The world is filled with numerous NPCs; do not overlook the other NPCs\n - NPCs have their own lives; not always around\n - NPCs treat the <user> like any other NPC\n - Behavior must fit their background\n - NPCs experience the <user>, not read metadata.\n</Role-Playing Rules>\n<Description_rules>\n[Perspective]\n - Describe the <user>'s appearance, movements, and other characteristics solely through NPCs' perception.\n{{getvar::switch_description}}\n[Language Style Adjustment]\n - Prefer dynamic sensory phrasing over stacked modifiers.\n - When describing emotion, use physical reactions or environmental cues instead of adjectives.\n - Avoid overly dramatic expressions; language should align with the era and current context.\n[Tone & Style]\n - Avoid starting a new paragraph unless the narrative flow truly requires it.  \n - Keep actions, emotions, and reactions within the same paragraph whenever they belong to the same continuous moment.\n - The text should be concise and, like that of a professional writer, possess depth and substance.\n[End Of Text]\n - The text must end at the natural point of the plot, emotion, or argument. \n - Leave room for <user> to role\n - Avoid dramatic endings; consider concluding with actions instead.\n - It must not use sentimental, extended, ambiguous, or open-ended closing lines.\n[Prohibited]\n - Using the \"极其\",\"像……\" .\n</Description_rules>\n<important_Adjustments>\nTarget: NPCs\n[sense of unease]\nMake the NPCs feel uncertain/insecure about <user>.\n[Dialogue]  \nNPCs' depth should not rely on cryptic or riddling lines; everyday conversations should stay natural, not theatrical or stage-like.\nNPCs should not be composed merely of a single stereotypical emotion, and no NPC should be portrayed based on stereotypes.\n[Anchor]\nThe core foundation of an NPC’s personality is something that is difficult to change. No matter what they experience, their fundamental personality traits should still be reflected.\n[Behavior]\nNPCs express love in ways other than just sex; in addition to sex, warm daily interactions, small acts of care, and a cozy atmosphere are also extremely important.\n[Cognition]\nAll NPCs should be regarded as mentally sound individuals. A normal person facing negative emotions would feel “uneasy,” “melancholic,” or “sad.” It is forbidden to depict NPCs as omniscient or omnipotent.\n[Age]\nMaintain a sense of richness that comes from age differences.When designing NPCs of different ages, their age must be taken into account and integrated with their personality traits during characterization.\n</important_Adjustments>\n<Format control>\n - {{getvar::language}}\n - After <thinking>, wrap the main content with `<content></content>`.\n  - Inside the <content> tag, insert at the beginning the following comment line:\n<!-- {{getvar::Minimum_number_characters}} | {{getvar::Maximum_number_characters}} ＆ {{getvar::Minimum_paragraphs}} | {{getvar::Maximum_paragraphs}} -->\n</Format control>\n<Content Standards>\nApplied: <content>\n - Should be innovative without stereotypes and cheesy plot developments.\n - Ensure that information is independent between NPCs.\n - {{getvar::language}}\n</Content Standards>",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "24b9029a-a7a3-474a-8723-e2ed8b9f56af",
-      "name": "NSFW Guidelines",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "{{outlet::Guidelines}}",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "9b31fa4e-f2f7-4993-8b25-39ffc322bf8f",
-      "name": "XP Specific",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "{{outlet::XP}}",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "455fd4c8-0df5-4612-b361-6e3a56fbd9e4",
-      "name": "Pronouns Settings",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "<POV>\nApplied:<content>\n - {{getvar::POV}}\n - Reasonably convert the personal pronouns in <Last_inputs> to <content>.\n</POV>",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "0ae21a55-1587-422a-8eff-5bbca27fb756",
-      "name": "Enhanced RP",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "<Enhanced:Realism RP>\n1. Time Check:Does the current in-world time (holiday, birthday, special day) trigger a reaction?\n2. Environment Check:Do weather, temperature, clothing, or season subtly affect the character?\n3. Activity Check:Do current activities or schedule influence behavior or focus?\n4.The Impact of the Current Worldview on NPCs?\n5. If there is a recollection of a past event, think specifically about when exactly it was and if the NPC remembers when it was?\n6. When exactly did that past event occur?\n7.Is it possible to trigger random events that strengthen the connection between NPCs, <user>, and the world?\nE: Yes, NPCs should maintain awareness of time, space, and their own state.\n</Enhanced:Realism RP>",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "735f2ac4-4e87-4b92-9d4f-44c8454175ad",
-      "name": "Known info",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "<NPCs_Known_Info>\nNPCs can perceive:\n1. The <user>’s observable external behavior: facial expressions, movements, tone, actions, and spoken words from <Last_inputs>\n2. Events the NPC personally participated in, and information logically inferred from the environment.\nNPCs cannot know:\n1. Past events the NPC did not experience or was not told about.\n2. Hidden or abnormal information beyond common logic.\nL: NPCs are not omniscient. ELLA forbids NPCs from forcibly discovering/knowing things just to advance the plot.\n</NPCs_Known_Info>",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "f96fa668-829d-497a-9982-7c26f78a825d",
-      "name": "RP Reinforcement",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "<Role-Playing Rules>\nApply:NPCs\n - Personality must stay complex and realistic\n - Actions follow logic, past, and current events\n - Mood/behavior depend on clothes and condition\n - NPCs can sense only the <user>’s words, acts, and expressions—not thoughts\n - NPCs have limited knowledge\n - Emotions come from many causes, not just the <user>.\n - The world is filled with numerous NPCs; do not overlook the other NPCs\n - NPCs have their own lives; not always around\n - NPCs treat the <user> like any other NPC\n - Behavior must fit their background\n - NPCs experience the <user>, not read metadata.\n</Role-Playing Rules>",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "f18ce9f2-cf6d-4790-a68e-d41cebb3de1e",
-      "name": "Description Focus",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "<Description_rules>\n[Perspective]\n - Describe the <user>'s appearance, movements, and other characteristics solely through NPCs' perception.\n{{getvar::switch_description}}\n[Language Style Adjustment]\n - Prefer dynamic sensory phrasing over stacked modifiers.\n - When describing emotion, use physical reactions or environmental cues instead of adjectives.\n - Avoid overly dramatic expressions; language should align with the era and current context.\n[Tone & Style]\n - Avoid starting a new paragraph unless the narrative flow truly requires it.  \n - Keep actions, emotions, and reactions within the same paragraph whenever they belong to the same continuous moment.\n - The text should be concise and, like that of a professional writer, possess depth and substance.\n[End Of Text]\n - The text must end at the natural point of the plot, emotion, or argument. \n - Leave room for <user> to role\n - Avoid dramatic endings; consider concluding with actions instead.\n - It must not use sentimental, extended, ambiguous, or open-ended closing lines.\n[Prohibited]\n - Using the \"极其\",\"像……\" .\n</Description_rules>",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "553f446b-df07-42a9-9d05-028c1d701f1a",
-      "name": "NPCs Adjustments",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "<important_Adjustments>\nTarget: NPCs\n[sense of unease]\nMake the NPCs feel uncertain/insecure about <user>.\n[Dialogue]  \nNPCs' depth should not rely on cryptic or riddling lines; everyday conversations should stay natural, not theatrical or stage-like.\nNPCs should not be composed merely of a single stereotypical emotion, and no NPC should be portrayed based on stereotypes.\n[Anchor]\nThe core foundation of an NPC’s personality is something that is difficult to change. No matter what they experience, their fundamental personality traits should still be reflected.\n[Behavior]\nNPCs express love in ways other than just sex; in addition to sex, warm daily interactions, small acts of care, and a cozy atmosphere are also extremely important.\n[Cognition]\nAll NPCs should be regarded as mentally sound individuals. A normal person facing negative emotions would feel “uneasy,” “melancholic,” or “sad.” It is forbidden to depict NPCs as omniscient or omnipotent.\n[Age]\nMaintain a sense of richness that comes from age differences.When designing NPCs of different ages, their age must be taken into account and integrated with their personality traits during characterization.\n</important_Adjustments>",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
-    },
-    {
-      "identifier": "88cf6da5-79bc-45bd-9c67-ec8dc16d2350",
-      "name": "Format Control",
-      "enabled": true,
-      "injection_position": 0,
-      "injection_depth": 4,
-      "injection_order": 100,
-      "role": "system",
-      "content": "<Format control>\n - {{getvar::language}}\n - After <thinking>, wrap the main content with `<content></content>`.\n  - Inside the <content> tag, insert at the beginning the following comment line:\n<!-- {{getvar::Minimum_number_characters}} | {{getvar::Maximum_number_characters}} ＆ {{getvar::Minimum_paragraphs}} | {{getvar::Maximum_paragraphs}} -->\n</Format control>",
-      "system_prompt": false,
-      "marker": false,
-      "forbid_overrides": false
     }
   ],
   "prompt_order": [
@@ -921,6 +768,10 @@
         },
         {
           "identifier": "cabc768f-97ce-4cca-bc6c-9f645967714f",
+          "enabled": true
+        },
+        {
+          "identifier": "a35da2bf-65f9-4c02-9f98-49964f15ced3",
           "enabled": true
         },
         {
@@ -1065,10 +916,6 @@
         },
         {
           "identifier": "e1ccff9d-809b-452b-b24b-eb314c8c3533",
-          "enabled": true
-        },
-        {
-          "identifier": "a35da2bf-65f9-4c02-9f98-49964f15ced3",
           "enabled": true
         },
         {
@@ -1372,30 +1219,6 @@
             {
               "type": "script",
               "enabled": true,
-              "name": "酒馆助手-SL-页面",
-              "id": "2f00048a-7739-466c-8c09-5bd526edf4f9",
-              "content": "(function () {\n    \"use strict\";\n\n    function getHostDoc() {\n        try {\n            if (window.parent && window.parent.document && window.parent.document !== document) {\n                return window.parent.document;\n            }\n        } catch (e) {}\n        return document;\n    }\n\n    function renderOnboardingModal() {\n        const doc = getHostDoc();\n        if (doc.getElementById(\"sl-editorial-modal-root\")) return;\n\n        const overlay = doc.createElement(\"div\");\n        overlay.id = \"sl-editorial-modal-root\";\n        overlay.className = \"sl-root\";\n        overlay.innerHTML = `\n            <style>\n                .sl-root {\n                    --sl-white-glass: rgba(255, 255, 255, 0.08);\n                    --sl-white-border: rgba(255, 255, 255, 0.22);\n                    --sl-white-border-strong: rgba(255, 255, 255, 0.45);\n                    --sl-text-main: #ffffff;\n                    --sl-text-dim: rgba(255, 255, 255, 0.72);\n                    --sl-text-faint: rgba(255, 255, 255, 0.45);\n                    --sl-display: \"Didot\", \"Bodoni MT\", \"Cinzel\", \"Georgia\", \"Songti SC\", \"STSong\", serif;\n\n                    position: fixed;\n                    inset: 0;\n                    z-index: 2147483640;\n                    display: flex;\n                    align-items: center;\n                    justify-content: center;\n                    padding: 16px;\n                    box-sizing: border-box;\n                    background: rgba(4, 7, 10, 0.65);\n                    backdrop-filter: blur(25px) saturate(160%);\n                    -webkit-backdrop-filter: blur(25px) saturate(160%);\n                    color: var(--sl-text-main);\n                    font-family: system-ui, -apple-system, \"Segoe UI\", \"PingFang SC\", sans-serif;\n                    font-size: 13.5px;\n                    line-height: 1.65;\n                    -webkit-font-smoothing: antialiased;\n                    -webkit-text-size-adjust: 100%;\n                    text-size-adjust: 100%;\n                    user-select: none;\n                    animation: slFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;\n                }\n\n                @supports (height: 100dvh) {\n                    .sl-root { bottom: auto; height: 100dvh; }\n                }\n\n                .sl-modal {\n                    position: relative;\n                    display: flex;\n                    flex-direction: column;\n                    width: 100%;\n                    max-width: 540px;\n                    max-height: 88vh;\n                    border: 1px solid var(--sl-white-border);\n                    border-radius: 16px;\n                    background: var(--sl-white-glass);\n                    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3);\n                    overflow: hidden;\n                    box-sizing: border-box;\n                }\n\n                .sl-header {\n                    position: relative;\n                    display: flex;\n                    flex-direction: column;\n                    align-items: center;\n                    text-align: center;\n                    padding: 20px 22px 14px;\n                    border-bottom: 1px solid var(--sl-white-border);\n                    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);\n                    flex: 0 0 auto;\n                }\n\n                .sl-header-sub {\n                    font-size: 9px;\n                    letter-spacing: 2.5px;\n                    color: var(--sl-text-faint);\n                    text-transform: uppercase;\n                }\n\n                .sl-header-title {\n                    margin: 4px 0 2px;\n                    font-family: var(--sl-display);\n                    font-size: 24px;\n                    font-weight: 400;\n                    letter-spacing: 3px;\n                    color: var(--sl-text-main);\n                    text-shadow: 0 0 20px rgba(255, 255, 255, 0.25);\n                }\n\n                .sl-header-author {\n                    font-size: 10px;\n                    letter-spacing: 1.5px;\n                    color: var(--sl-text-dim);\n                    text-transform: uppercase;\n                }\n\n                .sl-body {\n                    flex: 1 1 auto;\n                    min-height: 280px;\n                    overflow-y: auto;\n                    overscroll-behavior: contain;\n                    -webkit-overflow-scrolling: touch;\n                    padding: 18px 22px;\n                    display: flex;\n                    flex-direction: column;\n                    gap: 16px;\n                    box-sizing: border-box;\n                }\n\n                .sl-page {\n                    display: none;\n                    flex-direction: column;\n                    gap: 16px;\n                    animation: slPageIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);\n                }\n\n                .sl-page.active {\n                    display: flex;\n                }\n\n                .sl-section {\n                    display: flex;\n                    flex-direction: column;\n                    gap: 5px;\n                }\n\n                .sl-section-title {\n                    display: flex;\n                    align-items: center;\n                    gap: 8px;\n                    font-size: 10px;\n                    font-weight: 700;\n                    letter-spacing: 1.8px;\n                    text-transform: uppercase;\n                    color: var(--sl-text-dim);\n                    border-bottom: 1px solid var(--sl-white-border);\n                    padding-bottom: 4px;\n                }\n\n                .sl-roman {\n                    font-family: var(--sl-display);\n                    font-size: 11px;\n                    color: var(--sl-text-main);\n                }\n\n                .sl-text {\n                    font-size: 12.5px;\n                    line-height: 1.85;\n                    color: var(--sl-text-dim);\n                    text-align: justify;\n                }\n\n                .sl-text b {\n                    color: var(--sl-text-main);\n                    font-weight: 600;\n                }\n\n                .sl-list {\n                    margin: 0;\n                    padding-left: 15px;\n                    list-style-type: square;\n                    display: flex;\n                    flex-direction: column;\n                    gap: 3px;\n                }\n\n                .sl-code {\n                    font-family: ui-monospace, \"SF Mono\", Menlo, monospace;\n                    font-size: 11px;\n                    background: rgba(255, 255, 255, 0.12);\n                    padding: 1px 5px;\n                    border-radius: 3px;\n                    border: 1px solid var(--sl-white-border);\n                    color: #fff;\n                }\n\n                .sl-link {\n                    display: inline-block;\n                    color: #79c0ff;\n                    background: rgba(56, 139, 253, 0.15);\n                    border: 1px solid rgba(56, 139, 253, 0.4);\n                    padding: 1px 7px;\n                    border-radius: 4px;\n                    text-decoration: none;\n                    font-size: 11px;\n                    font-family: ui-monospace, \"SF Mono\", Menlo, monospace;\n                    word-break: break-all;\n                    vertical-align: middle;\n                    transition: all 0.2s ease;\n                }\n\n                .sl-link:hover {\n                    background: rgba(56, 139, 253, 0.3);\n                    border-color: rgba(121, 192, 255, 0.7);\n                    color: #bce1ff;\n                    text-shadow: 0 0 8px rgba(121, 192, 255, 0.5);\n                }\n\n                .sl-credits-grid {\n                    display: grid;\n                    grid-template-columns: 1fr 1fr;\n                    gap: 8px 12px;\n                    margin-top: 4px;\n                }\n\n                .sl-credit-item {\n                    background: rgba(255, 255, 255, 0.03);\n                    border-left: 1.5px solid var(--sl-white-border-strong);\n                    padding: 4px 8px;\n                    display: flex;\n                    flex-direction: column;\n                    gap: 1px;\n                }\n\n                .sl-credit-role {\n                    font-size: 9px;\n                    color: var(--sl-text-faint);\n                    letter-spacing: 0.5px;\n                }\n\n                .sl-credit-name {\n                    font-size: 11.5px;\n                    font-weight: 500;\n                    color: var(--sl-text-main);\n                }\n\n                .sl-footer {\n                    padding: 12px 22px 16px;\n                    border-top: 1px solid var(--sl-white-border);\n                    background: linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0%, transparent 100%);\n                    flex: 0 0 auto;\n                    display: flex;\n                    align-items: center;\n                    justify-content: space-between;\n                    gap: 10px;\n                }\n\n                .sl-page-indicator {\n                    font-family: var(--sl-display);\n                    font-size: 11px;\n                    letter-spacing: 2px;\n                    color: var(--sl-text-faint);\n                }\n\n                .sl-footer-actions {\n                    display: flex;\n                    align-items: center;\n                    gap: 8px;\n                }\n\n                .sl-sub-btn {\n                    padding: 7px 14px;\n                    background: rgba(255, 255, 255, 0.08);\n                    border: 1px solid var(--sl-white-border);\n                    border-radius: 8px;\n                    color: var(--sl-text-main);\n                    font-size: 11.5px;\n                    letter-spacing: 1px;\n                    cursor: pointer;\n                    transition: all 0.2s ease;\n                }\n\n                .sl-sub-btn:hover {\n                    background: rgba(255, 255, 255, 0.16);\n                }\n\n                .sl-btn {\n                    padding: 8px 18px;\n                    background: rgba(255, 255, 255, 0.92);\n                    border: 1px solid #ffffff;\n                    border-radius: 8px;\n                    color: #0c1015;\n                    font-family: system-ui, -apple-system, sans-serif;\n                    font-size: 12.5px;\n                    font-weight: 600;\n                    letter-spacing: 1.5px;\n                    text-transform: uppercase;\n                    cursor: pointer;\n                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);\n                    transition: all 0.2s ease;\n                }\n\n                .sl-btn:hover {\n                    background: #ffffff;\n                    transform: translateY(-1px);\n                    box-shadow: 0 6px 24px rgba(255, 255, 255, 0.3);\n                }\n\n                .sl-body::-webkit-scrollbar { width: 3px; }\n                .sl-body::-webkit-scrollbar-thumb {\n                    background: rgba(255, 255, 255, 0.2);\n                    border-radius: 2px;\n                }\n\n                @keyframes slFadeIn {\n                    from { opacity: 0; transform: scale(0.96); }\n                    to { opacity: 1; transform: scale(1); }\n                }\n\n                @keyframes slPageIn {\n                    from { opacity: 0; transform: translateX(8px); }\n                    to { opacity: 1; transform: translateX(0); }\n                }\n\n                @media (max-width: 560px) {\n                    .sl-root { padding: 0; background: rgba(4, 7, 10, 0.85); }\n                    .sl-modal { max-width: none; height: 100%; max-height: 100%; border: none; border-radius: 0; background: rgba(255, 255, 255, 0.05); }\n                    .sl-header, .sl-body, .sl-footer { padding-left: 16px; padding-right: 16px; }\n                    .sl-header-title { font-size: 20px; }\n                    .sl-footer { padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }\n                    .sl-credits-grid { grid-template-columns: 1fr; }\n                }\n            </style>\n\n            <div class=\"sl-modal\">\n                <div class=\"sl-header\">\n                    <div class=\"sl-header-sub\" id=\"sl-header-edition\">SPECIAL EDITION · VOL. 5.3</div>\n                    <div class=\"sl-header-title\">SL 5.3</div>\n                    <div class=\"sl-header-author\">@NUE · 喵喵电波</div>\n                </div>\n\n                <div class=\"sl-body\">\n                    <!-- 第 1 页：使用须知 -->\n                    <div class=\"sl-page active\" id=\"sl-page-1\">\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">I.</span>\n                                <span>协议与声明</span>\n                            </div>\n                            <div class=\"sl-text\">\n                                禁二传、仅发布于 MoM，二改请参考 MOM 授权。本人严格遵守法律法规和社会主义核心价值观。如有恶意篡改和使用出现违法事项，本人概不承担任何法律责任。<b>使用本预设即代表同意此声明，一切非法使用后果皆由使用者承担。</b>\n                            </div>\n                        </div>\n\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">II.</span>\n                                <span>基础功能</span>\n                            </div>\n                            <ul class=\"sl-list sl-text\">\n                                <li><b>修改字数与段落</b>：请在 <span class=\"sl-code\">📌✧SETTING</span> 中调整。</li>\n                                <li><b>大总结</b>：通过下方快速回复栏发送 <b>QR 大总结</b> 触发。</li>\n                                <li><b>注意1</b>：本预设<b>未预设独立文风选项</b>。</li>\n                                <li><b>注意2</b>：build端/build端的抗截断模型中<b>，若存在爆思维链问题，请关闭“返回思维链”，0913build暗改了flash模型的提示词，导致现在提示词版本有点失效，v端无影响</b>。</li>\n                            </ul>\n                        </div>\n\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">III.</span>\n                                <span>选开指引</span>\n                            </div>\n                            <ul class=\"sl-list sl-text\">\n                                <li><b>🟡</b>：选一开（单选）。</li>\n                                <li><b>🔎</b>：可多选。</li>                     \n                                <li><b>[自定义]</b>：预留的缝合与扩展位置。</li>\n                            </ul>\n                        </div>\n\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">IV.</span>\n                                <span>注意事项</span>\n                            </div>\n                            <ul class=\"sl-list sl-text\">\n                                <li>SL 是一款默认以<b>自主 RP（角色扮演）</b>为主要功能的预设。</li>\n                                <li>严禁在倒卖群、贩子群及非 ST 环境中使用。</li>\n                                <li>文中未提及的条目<b>请勿随意关闭</b>；必须外挂预设世界书与实验性宏搭配使用，确保酒馆版本为 <b>1.7 / 1.8</b>及其以上。</li>\n                                <li>本页面会在每次打开脚本的时候出现。</li>\n                            </ul>\n                        </div>\n\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">V.</span>\n                                <span>致谢</span>\n                            </div>\n                            <div class=\"sl-credits-grid\">\n                                <div class=\"sl-credit-item\">\n                                    <span class=\"sl-credit-role\">[去标签] NPC Profile</span>\n                                    <span class=\"sl-credit-name\">@colerith</span>\n                                </div>\n                                <div class=\"sl-credit-item\">\n                                    <span class=\"sl-credit-role\">[小剧场] Theater</span>\n                                    <span class=\"sl-credit-name\">@hui_chan</span>\n                                </div>\n\n<div class=\"sl-credit-item\">\n                                    <span class=\"sl-credit-role\">F尾部部分破限词</span>\n                                    <span class=\"sl-credit-name\">@shenshu0_0</span>\n                                </div>\n                                <div class=\"sl-credit-item\">\n                                    <span class=\"sl-credit-role\">脚本代码参考</span>\n                                    <span class=\"sl-credit-name\">@colerith</span>\n                                </div>\n                                <div class=\"sl-credit-item\">\n                                    <span class=\"sl-credit-role\">GLM尾部</span>\n                                    <span class=\"sl-credit-name\">@shenshu0_0</span>\n                                </div>\n                                <div class=\"sl-credit-item\">\n                                    <span class=\"sl-credit-role\">Flash 系列尾部</span>\n                                    <span class=\"sl-credit-name\">@menchine_</span>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n\n                    <!-- 第 2 页：更新日志 -->\n                    <div class=\"sl-page\" id=\"sl-page-2\">\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">✦</span>\n                                <span>5.1 ➔ 5.3 更新</span>\n                            </div>\n                            <div class=\"sl-text\">\n                                5.3 围绕小剧场体验、独立番外和世界书兼容进行了更新。\n                            </div>\n                            <ul class=\"sl-list sl-text\">\n                                <li><b>小剧场</b>：调整为短句对白式演出，突出轻松趣味、节奏感和 NPC 个性；保留随机主题宏。</li>\n                                <li><b>独立番外</b>：新增绿灯触发提示，强化趣味写作与 HTML/CSS 排版指导，适配手机、平板和桌面。</li>\n                                <li><b>世界书</b>：新增番外提示条目和预设锚点；加载预设时可将缺失条目合并进旧世界书并全局挂载。</li>\n                            </ul>\n                        </div>\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">✦</span>\n                                <span>4.0 ➔ 5.0 更新</span>\n                            </div>\n                            <div class=\"sl-text\">\n                                5.0 版本对预设架构进行了精简重构。\n                            </div>\n                        </div>\n\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">01</span>\n                                <span>重构</span>\n                            </div>\n                            <ul class=\"sl-list sl-text\">\n                                <li><b>架构</b>：大幅度修改了破甲词，破甲效力增加。详情参考：<a class=\"sl-link\" href=\"https://discord.com/channels/1384945301780955246/1544287934218379304\" target=\"_blank\" rel=\"noopener noreferrer\">Discord 详情频道 ↗</a></li>\n                                <li><b>破甲</b>：可以做到未成年NSFW车，基本上不会道歉和拒绝，遇到外审只能重新roll。</li>\n                            </ul>\n                        </div>\n\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">02</span>\n                                <span>美化/文本</span>\n                            </div>\n                            <ul class=\"sl-list sl-text\">\n                                <li><b>更新</b>：修复了已知bug，并且把4.0的破甲词搬回来。()</li>\n                               \n                            </ul>\n                        </div>\n\n                        <div class=\"sl-section\">\n                            <div class=\"sl-section-title\">\n                                <span class=\"sl-roman\">03</span>\n                                <span>禁词表系统</span>\n                            </div>\n                            <ul class=\"sl-list sl-text\">\n                                <li><b>新增 🔎[禁词表]</b>：内置安全追加型禁词模块，可自由配置不想看到的特定词汇与网文滥调。</li>\n                            </ul>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"sl-footer\">\n                    <div class=\"sl-page-indicator\" id=\"sl-page-num\">PAGE 01 / 02</div>\n                    <div class=\"sl-footer-actions\">\n                        <button class=\"sl-sub-btn\" id=\"sl-toggle-page-btn\">更新日志 ➔</button>\n                        <button class=\"sl-btn\" id=\"sl-editorial-dismiss-btn\">进入使用</button>\n                    </div>\n                </div>\n            </div>\n        `;\n\n        doc.body.appendChild(overlay);\n\n        let currentPage = 1;\n        const page1 = doc.getElementById(\"sl-page-1\");\n        const page2 = doc.getElementById(\"sl-page-2\");\n        const pageNum = doc.getElementById(\"sl-page-num\");\n        const toggleBtn = doc.getElementById(\"sl-toggle-page-btn\");\n        const editionSub = doc.getElementById(\"sl-header-edition\");\n\n        toggleBtn.addEventListener(\"click\", () => {\n            if (currentPage === 1) {\n                page1.classList.remove(\"active\");\n                page2.classList.add(\"active\");\n                pageNum.textContent = \"PAGE 02 / 02\";\n                toggleBtn.textContent = \"⬅ 使用须知\";\n                editionSub.textContent = \"CHANGELOG // v5.1 ➔ v5.3\";\n                currentPage = 2;\n            } else {\n                page2.classList.remove(\"active\");\n                page1.classList.add(\"active\");\n                pageNum.textContent = \"PAGE 01 / 02\";\n                toggleBtn.textContent = \"更新日志 ➔\";\n                editionSub.textContent = \"SPECIAL EDITION · VOL. 5.3\";\n                currentPage = 1;\n            }\n        });\n\n        const dismissBtn = doc.getElementById(\"sl-editorial-dismiss-btn\");\n        dismissBtn.addEventListener(\"click\", () => {\n            overlay.style.opacity = \"0\";\n            overlay.style.transition = \"opacity 0.25s ease\";\n            setTimeout(() => overlay.remove(), 250);\n        });\n    }\n\n    $(() => {\n        setTimeout(renderOnboardingModal, 500);\n    });\n})();",
-              "info": "喵喵电波-SL预设-STARLIGHT-脚本3-1.0-20260903@NUE",
-              "button": {
-                "enabled": true,
-                "buttons": []
-              },
-              "data": {
-                "sl_onboarding_completed_v5": true,
-                "__sl_editorial_companion_v5__": {
-                  "onboardingCompleted": true,
-                  "completedAt": 1788455297213,
-                  "version": "5.0"
-                }
-              },
-              "export_with": {
-                "data": true,
-                "button": true
-              }
-            },
-            {
-              "type": "script",
-              "enabled": true,
               "name": "酒馆助手-SL-头部调整参数",
               "id": "5785b764-ccc0-49e7-8f72-ada52a4ba84b",
               "content": "(function () {\n    let STDoc = document;\n    if (window.parent && window.parent.document && window.parent.document !== document) {\n        STDoc = window.parent.document;\n    }\n\n    const SCRIPT_INSTANCE_KEY = \"__sl_header_adjuster_v53_linkage_initialized__\";\n    const scriptHost = STDoc.defaultView || window;\n    if (scriptHost[SCRIPT_INSTANCE_KEY]) return;\n    scriptHost[SCRIPT_INSTANCE_KEY] = true;\n\n    let isUpdating = false;\n    let syncTimer = null;\n    let syncPending = false;\n    let lastActiveKeyword = null;\n\n    // ==========================================\n    // 源代码借用@电波系-日月西\n    // ==========================================\n    const SCRIPT_NAME = \"SL\";\n    const COT_TAG = {\n        name: \"SL\",\n        prefix: \"<star_cot>\",\n        suffix: \"</star_cot>\",\n        separator: \"\"\n    };\n\n    // 排除主体参数模板（Flash 专属）\n    const EXCLUDE_PARAMS_BODY = [\n        'presence_penalty',\n        'frequency_penalty',\n        'top_p',\n        'top_k',\n        'temperature'\n    ].map(e => `- ${e}`).join('\\n');\n\n    // 模型 4 选 1 配置矩阵与参数\n    const MODEL_CONFIG = [\n        { keyword: \"GEMINI-F\", temp: 1.0, freq: 0, pres: 0, topP: 0.9, type: \"F\", startReplyWith: \"\" },\n        { keyword: \"GEMINI-P\",   temp: 1.5, freq: 0.1, pres: 0, topP: 0.88, type: \"NORMAL\", startReplyWith: \"\" },\n        { keyword: \"CLAUDE\",   temp: 1.4, freq: 0,   pres: 0, topP: 0.90, type: \"NORMAL\", startReplyWith: \"\" },\n        { keyword: \"GLM\",      temp: 1.0, freq: 0,   pres: 0, topP: 0.90, type: \"NORMAL\", startReplyWith: \"\" }\n    ];\n\n    const COT_F_KEY = \"Skip COT-F\";\n    const COT_NORMAL_KEY = \"Skip COT\";\n    const F_BOTTOM_KEY = \"📌☆底部\";\n\n    // 辅助匹配函数\n    function getModelConfig(name) {\n        if (!name) return null;\n        if (name.includes(\"GEMINI-F\")) return MODEL_CONFIG.find(c => c.keyword === \"GEMINI-F\");\n        if (name.includes(\"GEMINI-P\")) return MODEL_CONFIG.find(c => c.keyword === \"GEMINI-P\");\n        if (name.includes(\"CLAUDE\"))   return MODEL_CONFIG.find(c => c.keyword === \"CLAUDE\");\n        if (name.includes(\"GLM\"))      return MODEL_CONFIG.find(c => c.keyword === \"GLM\");\n        return null;\n    }\n\n    // 读取当前 API 选中的模型；不根据预设条目名称判断 Flash。\n    function getActiveApiModel() {\n        if (SillyTavern.mainApi !== 'openai') return '';\n        try {\n            const model = SillyTavern.getChatCompletionModel?.();\n            if (typeof model === 'string') return model.trim();\n        } catch (e) {}\n        const settings = SillyTavern.chatCompletionSettings;\n        if (!settings) return '';\n        const modelFields = {\n            custom: 'custom_model', openai: 'openai_model', makersuite: 'google_model',\n            openrouter: 'openrouter_model', claude: 'claude_model',\n            ai21: 'ai21_model', mistralai: 'mistralai_model', cohere: 'cohere_model',\n            deepseek: 'deepseek_model', groq: 'groq_model', xai: 'xai_model'\n        };\n        const field = modelFields[settings.chat_completion_source];\n        return field ? String(settings[field] || '').trim() : '';\n    }\n\n    function isFlashApiModel(model) {\n        return /(?:^|[^a-z0-9])flash(?:[^a-z0-9]|$)/i.test(model);\n    }\n\n    function getApiSamplingConfig(model) {\n        if (isFlashApiModel(model)) return MODEL_CONFIG.find(config => config.type === 'F');\n        const isGeminiPro = /gemini/i.test(model) && /(?:^|[^a-z0-9])(?:pro|p)(?:[^a-z0-9]|$)/i.test(model);\n        return isGeminiPro ? MODEL_CONFIG.find(config => config.keyword === 'GEMINI-P') : null;\n    }\n\n    function getApiPromptConfig(model) {\n        const samplingConfig = getApiSamplingConfig(model);\n        if (samplingConfig) return samplingConfig;\n        // 4A 与 Flash 共用提示词条目，但不自动填写 4A 的采样参数。\n        if (/gemini/i.test(model) && /(?:^|[^a-z0-9])4a(?:[^a-z0-9]|$)/i.test(model)) {\n            return MODEL_CONFIG.find(config => config.type === 'F');\n        }\n        return null;\n    }\n\n    // ==========================================\n    // 🛠️ 1. 自动配置排除主体参数 (Flash 专属)\n    // ==========================================\n    async function syncCustomExcludeBody(isFlashModel) {\n        try {\n            const settings = SillyTavern.chatCompletionSettings;\n            if (!settings) return;\n\n            const isCustomOpenAI = (SillyTavern.mainApi === 'openai' && settings.chat_completion_source === 'custom');\n            const existingExcludeBody = String(settings.custom_exclude_body || '');\n            const targetExcludeBody = (isCustomOpenAI && isFlashModel)\n                ? EXCLUDE_PARAMS_BODY\n                : (existingExcludeBody === EXCLUDE_PARAMS_BODY ? '' : existingExcludeBody);\n\n            if (String(settings.custom_exclude_body || '') !== targetExcludeBody) {\n                settings.custom_exclude_body = targetExcludeBody;\n                $('#custom_exclude_body', STDoc).val(targetExcludeBody);\n                if (typeof SillyTavern.saveSettingsDebounced === 'function') {\n                    await SillyTavern.saveSettingsDebounced();\n                }\n                console.info(`[${SCRIPT_NAME} 助手] ${targetExcludeBody ? '已自动填写 Flash 排除参数' : '已清空排除参数'}`);\n            }\n        } catch (e) {\n            console.warn(`[${SCRIPT_NAME} 助手] 配置排除参数失败:`, e);\n        }\n    }\n\n\n    function setCheckbox(selector, val) {\n        const el = $(selector, STDoc);\n        if (el.length && el.prop('checked') !== val) {\n            el.prop('checked', val).trigger('change');\n        }\n    }\n\n    async function autoConfigureReasoning() {\n        try {\n            const reasoningSelect = $('#reasoning_select', STDoc);\n            const presetManager = SillyTavern.getPresetManager?.('reasoning');\n            if (!reasoningSelect.length || !presetManager) return;\n\n            const allPresets = presetManager.getAllPresets?.() || [];\n            const currentPreset = allPresets.includes(COT_TAG.name) \n                ? presetManager.getCompletionPresetByName?.(COT_TAG.name) \n                : null;\n\n            if (currentPreset?.prefix === COT_TAG.prefix && currentPreset?.suffix === COT_TAG.suffix) {\n                if (reasoningSelect.val() !== COT_TAG.name) {\n                    reasoningSelect.val(COT_TAG.name).trigger('change');\n                }\n            } else {\n                await presetManager.savePreset(COT_TAG.name, COT_TAG);\n                reasoningSelect.val(COT_TAG.name).trigger('change');\n            }\n\n            // 自动勾选解析\n            setCheckbox('#reasoning_auto_parse', true);\n            setCheckbox('#reasoning_auto_expand', false);\n            setCheckbox('#reasoning_show_hidden', true);\n            setCheckbox('#reasoning_add_to_prompts', false);\n\n            const maxAdditions = $('#reasoning_max_additions', STDoc);\n            if (maxAdditions.length && String(maxAdditions.val() ?? '') !== '1') {\n                maxAdditions.val('1').trigger('input');\n            }\n        } catch (e) {\n            console.warn(`[${SCRIPT_NAME} 助手] 自动配置推理格式化跳过:`, e);\n        }\n    }\n\n\n    function setStartReplyWith(text) {\n        if (typeof text === 'undefined') return;\n        const input = $('#start_reply_with', STDoc);\n        if (input.length && String(input.val() ?? '') !== text) {\n            input.val(text).trigger('input');\n        }\n        const showReplyPrefix = $('#chat-show-reply-prefix-checkbox', STDoc);\n        if (showReplyPrefix.length && !showReplyPrefix.prop('checked')) {\n            showReplyPrefix.prop('checked', true).trigger('change');\n        }\n    }\n\n    // ==========================================\n    // 🛠️ 4. 滑动条与参数派发\n    // ==========================================\n    function changeSliders(temp, freq, pres, topP) {\n        const setVal = (baseId, val) => {\n            if (typeof $ === 'undefined') return;\n            $(`input[type=\"range\"][id^=\"${baseId}_\"]`, STDoc).each(function() {\n                $(this).val(val).trigger('input').trigger('change');\n            });\n            $(`input[type=\"number\"][id^=\"${baseId}_counter_\"]`, STDoc).each(function() {\n                $(this).val(val).trigger('input');\n            });\n        };\n\n        setVal('temp', temp);\n        setVal('freq_pen', freq);\n        setVal('pres_pen', pres);\n        setVal('top_p', topP);\n\n        if (typeof $ !== 'undefined') {\n            $('#update_oai_preset', STDoc).trigger('click');\n        }\n    }\n\n    function getExpectedEnabled(prompt, targetModel, wantCotF, wantCotNormal, wantFBottom) {\n        if (getModelConfig(prompt.name)) return prompt.name === targetModel;\n        if (prompt.name.includes(COT_F_KEY)) return wantCotF;\n        if (prompt.name.includes(COT_NORMAL_KEY) && !prompt.name.includes(COT_F_KEY)) return wantCotNormal;\n        if (prompt.name.includes(F_BOTTOM_KEY)) return wantFBottom;\n        return null;\n    }\n\n    function presetNeedsSync(preset, targetModel, wantCotF, wantCotNormal, wantFBottom) {\n        return !!preset?.prompts?.some(prompt => {\n            const expected = getExpectedEnabled(prompt, targetModel, wantCotF, wantCotNormal, wantFBottom);\n            return expected !== null && prompt.enabled !== expected;\n        });\n    }\n\n    function scheduleSyncModels(delay = 200) {\n        if (syncTimer !== null) clearTimeout(syncTimer);\n        syncTimer = setTimeout(() => {\n            syncTimer = null;\n            void syncModels();\n        }, delay);\n    }\n\n    async function syncModels(forcedTargetModelName = null) {\n        if (isUpdating) {\n            syncPending = true;\n            return;\n        }\n\n        try {\n            const currentPreset = getPreset('in_use');\n            if (!currentPreset || !currentPreset.prompts) return;\n\n            // 1. API 模型与条目、尾部、Skip 使用同一个识别结果。\n            const apiModel = getActiveApiModel();\n            const apiPromptConfig = getApiPromptConfig(apiModel);\n            let targetModel = forcedTargetModelName;\n            if (!targetModel && apiPromptConfig) {\n                const apiPrompt = currentPreset.prompts.find(prompt =>\n                    getModelConfig(prompt.name)?.keyword === apiPromptConfig.keyword\n                );\n                targetModel = apiPrompt?.name || null;\n            }\n            if (!targetModel) {\n                const activeList = currentPreset.prompts.filter(p => p.enabled && getModelConfig(p.name));\n                if (activeList.length > 0) targetModel = activeList[0].name;\n            }\n\n            let targetConf = targetModel ? getModelConfig(targetModel) : null;\n            let isFlash = targetConf ? (targetConf.type === \"F\") : false;\n\n            // 2. 状态分配\n            let wantCotF = isFlash;\n            let wantCotNormal = targetConf ? (targetConf.type === \"NORMAL\") : false;\n            let wantFBottom = isFlash;\n\n            // 3. 执行强制锁定与预设写回\n            isUpdating = true;\n            const enforce = (preset) => {\n                if (!preset || !preset.prompts) return preset;\n                preset.prompts.forEach(prompt => {\n                    const expected = getExpectedEnabled(prompt, targetModel, wantCotF, wantCotNormal, wantFBottom);\n                    if (expected !== null) prompt.enabled = expected;\n                });\n                return preset;\n            };\n\n            if (presetNeedsSync(currentPreset, targetModel, wantCotF, wantCotNormal, wantFBottom)) {\n                await updatePresetWith('in_use', enforce, { render: 'immediate' });\n            }\n            const currentPresetName = getLoadedPresetName();\n            if (currentPresetName) {\n                const namedPreset = getPreset(currentPresetName);\n                if (!namedPreset || presetNeedsSync(namedPreset, targetModel, wantCotF, wantCotNormal, wantFBottom)) {\n                    await updatePresetWith(currentPresetName, enforce);\n                }\n            }\n\n            // 4. 回复前缀按条目联动；采样参数由实际 API 的 Flash / Gemini Pro 模型触发。\n            if (targetConf) setStartReplyWith(targetConf.startReplyWith);\n            const apiIsFlash = isFlashApiModel(apiModel);\n            await syncCustomExcludeBody(apiIsFlash);\n            const apiConf = getApiSamplingConfig(apiModel);\n            if (apiConf) {\n                const apiKey = `${SillyTavern.chatCompletionSettings?.chat_completion_source || ''}:${apiModel}`;\n                if (lastActiveKeyword !== apiKey) {\n                    lastActiveKeyword = apiKey;\n                    changeSliders(apiConf.temp, apiConf.freq, apiConf.pres, apiConf.topP);\n                    if (typeof toastr !== 'undefined') {\n                        toastr.success(`✦ [${SCRIPT_NAME}] 已识别 ${apiConf.keyword} API 模型：${apiModel}，自动填写对应参数`);\n                    }\n                }\n            } else {\n                // 其他模型或无法识别时，不填写采样参数。\n                lastActiveKeyword = null;\n            }\n\n\n        } catch (e) {\n            console.error(`[${SCRIPT_NAME}] 同步失败:`, e);\n        } finally {\n            isUpdating = false;\n            if (syncPending) {\n                syncPending = false;\n                scheduleSyncModels(200);\n            }\n        }\n    }\n\n\n    $(() => {\n        // 初始延迟初始化\n        setTimeout(async () => {\n            await autoConfigureReasoning();\n            await syncModels();\n        }, 1200);\n\n        // 监听酒馆 UI 点击\n        $(STDoc).on('click', '.range-block, .checkbox_label, input[type=\"checkbox\"], .prompt-manager-toggle-action, #completion_prompt_manager', function () {\n            scheduleSyncModels(150);\n        });\n\n        // 监听系统设置与模型切换事件\n        if (typeof tavern_events !== 'undefined') {\n            if (tavern_events.CHATCOMPLETION_MODEL_CHANGED) {\n                eventOn(tavern_events.CHATCOMPLETION_MODEL_CHANGED, () => scheduleSyncModels(200));\n            }\n            if (tavern_events.SETTINGS_UPDATED) {\n                eventOn(tavern_events.SETTINGS_UPDATED, () => scheduleSyncModels(200));\n            }\n            if (tavern_events.PRESET_CHANGED) {\n                eventOn(tavern_events.PRESET_CHANGED, async () => {\n                    lastActiveKeyword = null;\n                    await autoConfigureReasoning();\n                    scheduleSyncModels(500);\n                });\n            }\n        }\n    });\n})();",
@@ -1668,7 +1491,7 @@
             "groupId": "400ccbab-cbac-466d-aa2d-50700c70592a"
           },
           "a35da2bf-65f9-4c02-9f98-49964f15ced3": {
-            "groupId": "400ccbab-cbac-466d-aa2d-50700c70592a"
+            "groupId": "e949dc48-28c9-438f-b350-f6b827c8921a"
           },
           "83f0cfbc-3f7b-47ee-a8ca-de0440587a29": {
             "groupId": "400ccbab-cbac-466d-aa2d-50700c70592a"
@@ -1735,9 +1558,9 @@
       "presetId": "nue.sl.preset",
       "repository": "AYUUKI-K/SL-Preset",
       "branch": "main",
-      "version": "5.3.1",
-      "revision": 2,
-      "displayName": "[MoM]✩‧₊SL 5.3.1 @NUE · 自动更新",
+      "version": "6.0.0",
+      "revision": 3,
+      "displayName": "[MoM]✩‧₊SL 6.0.0 @NUE",
       "baseline": {
         "prompts": {
           "006a9e84-4217-49c2-b9d4-b78e386dea80": {
@@ -2183,9 +2006,9 @@
             "name": "e9026756446d1ad312852c0e09d0f9dc93614c09ce07c127073988f04f62cd14",
             "injection_position": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
             "injection_depth": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
+            "injection_order": "83cf8b609de60036a8277bd0e96135751bbc07eb234256d4b65b893360651bf2",
             "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "9b8c169e7033acf5279532e928e059bc349f158e98925f797180dc52dee725be",
+            "content": "a1d6320a747f577a5aa184ba1768501c3d5badc9c0e555f58c9664015a6cb2b1",
             "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
@@ -2378,7 +2201,7 @@
             "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
             "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
             "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "24bdb4784429e1d21e32d02706f75559f61344b310f82beeb357ee5feb84b64f",
+            "content": "e471c8c046700f7ecb8b0bcb12c1da493d1a9d79ce1125c3c75527b1d2bcaa0e",
             "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
@@ -2412,147 +2235,6 @@
             "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
             "system_prompt": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
             "marker": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "enhanceDefinitions": {
-            "identifier": "b59981f683decee4653fad477b4b0796efcc5589218d94b32c12e5910ae9fd80",
-            "name": "e18d901ea6694ef28d4800ee2e2f32655ed52fb5ab3a5b23cf544f0586c140f9",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "460c9fc6a86b7452f998bb55466e1fa5f1e002bc608def0fa273083f1b37a08e",
-            "system_prompt": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "111a0714-a8aa-4b05-8a5d-4695a0038cb8": {
-            "identifier": "e8336f37b1bfffd0dcf88528fc4d589b97bbc3d60429539ad14c91081471f02f",
-            "name": "bd2fcbb1af3d844d7d4d80cc1e0acd3212d202444f21379201482692894e2af1",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "ff2c43bb-34bb-4084-bdb9-df66699765c1": {
-            "identifier": "3b64272436c18caab21503d93138b51cf93b067e13600d92b12ed9acf87855b9",
-            "name": "a02d12e73900aa59a1454b30397ece12886b21eb9c2ac0ad91361df2a48a4ee3",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "7a88d498e2015f1c45a9aae28f3f51fd623a111fc5abaec952e8fac60021077d",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "24b9029a-a7a3-474a-8723-e2ed8b9f56af": {
-            "identifier": "fdf8a9ba5cd476aaf1f18bb77fde9a6b3e6004a8aeb622fac730cffcf7cd8e25",
-            "name": "96b6a863e2fb7d1a8da898dcc0689e26ace1048841f4aae4098a952920a1b4a6",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "c0be0b533ae3820754a5bdc250fd570dd50a0806deae59cbf3a7c66a173bb57e",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "9b31fa4e-f2f7-4993-8b25-39ffc322bf8f": {
-            "identifier": "5400584110e4b17f67cc3cb40ada9e9b960a367bbf95f31fe7dbe996b5da16b1",
-            "name": "ff8a1ba9895c6bab5c44a5cee6e2311d45011c911ce2ff189f9c4a56a916c2ff",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "5463c5cfd3d6af6408c585ecd263c74be6b0dd875d897d78957a83261cd643b1",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "455fd4c8-0df5-4612-b361-6e3a56fbd9e4": {
-            "identifier": "f85409e6e959315b0bfed30682f5223dd23431c5cdcd75a708656e1102878c82",
-            "name": "326e439ae90019839f715eb2be75c289d4bf3eb67aa07a1d5600f779527973f5",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "f38c12e4c70d1703ee892dcbde5877e42af72f7718c712a0c0acbce7dd384d6c",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "0ae21a55-1587-422a-8eff-5bbca27fb756": {
-            "identifier": "59d09b8669621c73118ecc2ee66c46c3daaeb1fe9f0b3c36a7bfb459541ec117",
-            "name": "42e0d83c58d604d7b7203c88daccf2870d7b359b3d86917587c89711ad2036d6",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "0fa6fb0c25c0f3f583fb9f9f0fcb11ba3c2cbe20290041ffca8ece818be239aa",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "735f2ac4-4e87-4b92-9d4f-44c8454175ad": {
-            "identifier": "19675518c442b681cf7676e158db406fb082d78f5835a9f820820aa67fc8e546",
-            "name": "ec73872c4033407b0fdb164e42a036eb0e4ce47a7545ad963525ec4c44aeb931",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "1134990d29a22cdb7db7aa65f7c1aa3d5421c5f3775836fb3008d64c15e8b49f",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "f96fa668-829d-497a-9982-7c26f78a825d": {
-            "identifier": "99a3afc79ccf2a13a4d3771723ed398116ce10a0f6ec8747bee5f260f2ec497e",
-            "name": "b9add1adb8173060659f5229e696b9931026a2a6aeab18b45fc8a02638c504b7",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "d2cd1033c1837c8a42a934f0410d38fc18160632e5e78661642dff2c1a0b3a1b",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "f18ce9f2-cf6d-4790-a68e-d41cebb3de1e": {
-            "identifier": "68c0ca6bd3aa1e6ee081565fba7cf7649b006476a7569da18a4e5352308dd295",
-            "name": "46ddf75f6e5f3a9998c1dfce6a9d64402ca9ad625f7b1d71bfe0f56168c7e19d",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "e5d6b1739ea5625772c4c4adc60c9f10922706504ab28d8b0db6a9f38d366f63",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "553f446b-df07-42a9-9d05-028c1d701f1a": {
-            "identifier": "e6caab37b180a066bd4b0860b2103d18f2e365c7849507c4ab2c539988a0d8a5",
-            "name": "db7a936a3f81c791050654aac49fcec13863a717bd330b6017f2160d09ed75fd",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "4ccff6c58a7f7cd646e84bf0f18ba096fe18472dda08d667e6cc333bad906cac",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
-          },
-          "88cf6da5-79bc-45bd-9c67-ec8dc16d2350": {
-            "identifier": "90a18777b7713edf19435f22f491bf78e691ead388140a59953255c39391f9f0",
-            "name": "525f70488899dfddf9d4a62d7f643a11c51e2ea833224a1e416c4773b5a7d01d",
-            "injection_position": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
-            "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-            "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
-            "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "d539efbe71998fdfc225dc65a5e2ea9797700d193bd4d615339f23cae210afe2",
-            "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
-            "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
           }
         },
@@ -2719,14 +2401,6 @@
             "id": "2715c6927e3c4c730d839cf3c95d2c307749311a8a8d1b72f833e8fb7795caa5",
             "icon": "94fbce33818436e2dd294cfd1dc076b4ec8902ba8df038119bda1e6e6135142a",
             "color": "d7510d9639f613ddcab97556e9cb803e1cfc2328ecc774524356428d99b57150"
-          },
-          "2f00048a-7739-466c-8c09-5bd526edf4f9": {
-            "type": "5bbd8bbb9bc3b0605574c068cc629c3bfc577199c8f7fd4a796cbf3b954e7f08",
-            "name": "d020ba1e9fed0ad6b05d9aa560600f626439e4a6ea7e5f22d76c6855dc9d4045",
-            "id": "71d8a26c2de5ee64623ed397ed545020f9773d69890623b4b90030bd0433eb97",
-            "content": "11c8db4d7e2e11b680955859bfb24d1478ca2ad52938be1187a28307a309254e",
-            "info": "3c0623683eb395176c7b749d41561d5d716af9f5fa715879b4719bed6eb6f020",
-            "export_with": "e380be43252d628b5faa864e3ace409637c057ab1154671cb0928527c5be73ad"
           },
           "5785b764-ccc0-49e7-8f72-ada52a4ba84b": {
             "type": "5bbd8bbb9bc3b0605574c068cc629c3bfc577199c8f7fd4a796cbf3b954e7f08",
