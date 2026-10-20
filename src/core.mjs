@@ -35,6 +35,52 @@ export function flattenScripts(trees) {
     return trees.flatMap(node => [node, ...(node.type === 'folder' ? flattenScripts(node.scripts ?? []) : [])]);
 }
 
+// Independent script entries also work in helper versions that cannot import folders.
+// Keep the author layout separately so the local editor can recover its groups.
+export function packageScriptTrees(trees) {
+    const scripts = [], layout = [];
+    for (const node of trees) {
+        if (node.type === 'folder') {
+            const folder = { ...clone(node), scripts: [] };
+            for (const child of node.scripts ?? []) {
+                if (child.type !== 'script') throw Error('脚本分组只能包含脚本，不能嵌套分组。');
+                const enabled = node.enabled !== false && child.enabled === true;
+                scripts.push({ ...clone(child), enabled });
+                folder.scripts.push({ id: child.id, enabled: child.enabled, exportedEnabled: enabled });
+            }
+            layout.push(folder);
+        } else { scripts.push(clone(node)); layout.push({ type: 'script', id: node.id }); }
+    }
+    return { scripts, layout };
+}
+export function restoreScriptLayout(preset) {
+    const result = clone(preset), layout = result.extensions?.[META_KEY]?.scriptLayout;
+    if (!Array.isArray(layout)) return result;
+    const trees = result.extensions?.tavern_helper?.scripts ?? [];
+    const byId = new Map(flattenScripts(trees).filter(x => x.type === 'script').map(x => [x.id, x]));
+    const placed = new Set(), restored = [];
+    for (const node of layout) {
+        if (node.type === 'folder') {
+            const children = (node.scripts ?? []).flatMap(ref => {
+                const script = byId.get(ref.id); if (!script || placed.has(ref.id)) return [];
+                placed.add(ref.id);
+                return [{ ...script, enabled: script.enabled === ref.exportedEnabled ? ref.enabled : script.enabled }];
+            });
+            restored.push({ ...node, scripts: children });
+        } else if (byId.has(node.id) && !placed.has(node.id)) { restored.push(byId.get(node.id)); placed.add(node.id); }
+    }
+    restored.push(...[...byId.values()].filter(x => !placed.has(x.id)));
+    result.extensions.tavern_helper.scripts = restored;
+    return result;
+}
+export function missingRequiredScripts(preset) {
+    const present = new Set(flattenScripts(preset.extensions?.tavern_helper?.scripts ?? []).filter(x => x.type === 'script').map(x => x.id));
+    return (preset.extensions?.[META_KEY]?.requiredScriptIds ?? []).filter(id => !present.has(id));
+}
+export function scriptReport(preset) {
+    return flattenScripts(preset.extensions?.tavern_helper?.scripts ?? []).filter(x => x.type === 'script').map(script => ({ id: script.id, name: script.name, enabled: script.enabled, updater: script.id === UPDATER_ID }));
+}
+
 function unique(items, key, label) {
     const ids = new Set();
     for (const item of items) {
@@ -96,14 +142,14 @@ function appendAnchored(result, locals, key, include = () => true) {
     return result;
 }
 
-async function mergeRecords(locals, remotes, base, key, protectedFields, keepEdits, conflicts) {
+async function mergeRecords(locals, remotes, base, key, protectedFields, keepEdits, conflicts, requiredIds = []) {
     const localMap = new Map(locals.map(x => [x[key], x]));
     const remoteIds = new Set(remotes.map(x => x[key]));
     const result = [];
     for (const remote of remotes) {
         const local = localMap.get(remote[key]);
         // A locally deleted managed item stays deleted. The updater itself is required.
-        if (!local && base[remote[key]] && remote[key] !== UPDATER_ID) continue;
+        if (!local && base[remote[key]] && remote[key] !== UPDATER_ID && !requiredIds.includes(remote[key])) continue;
         result.push(local ? await mergeFields(local, remote, base[remote[key]], protectedFields, keepEdits && remote[key] !== UPDATER_ID, conflicts) : clone(remote));
     }
     const remaining = [];
@@ -138,7 +184,7 @@ export async function mergePreset(local, remote, options = {}) {
     const locals = local.extensions.tavern_helper?.scripts ?? [];
     const remotes = remote.extensions.tavern_helper?.scripts ?? [];
     // Match by ID across folders so moving a script does not lose its state.
-    const flat = await mergeRecords(flattenScripts(locals), flattenScripts(remotes), base.scripts, 'id', ['enabled', 'data', 'button', 'scripts'], keepEdits, conflicts);
+    const flat = await mergeRecords(flattenScripts(locals), flattenScripts(remotes), base.scripts, 'id', ['enabled', 'data', 'button', 'scripts'], keepEdits, conflicts, remote.extensions[META_KEY].requiredScriptIds ?? []);
     const flatMap = new Map(flat.map(x => [x.id, x]));
     const placed = new Set();
     function place(tree) {
@@ -199,6 +245,7 @@ export async function verifyPayload(text, manifest) {
     const meta = preset.extensions[META_KEY];
     if (meta.revision !== manifest.revision || meta.version !== manifest.version || meta.displayName !== manifest.displayName) throw Error('更新清单与预设版本不一致。');
     if (!flattenScripts(preset.extensions.tavern_helper?.scripts ?? []).some(s => s.id === UPDATER_ID && s.enabled && typeof s.content === 'string')) throw Error('更新包缺少可用的更新脚本。');
+    if (missingRequiredScripts(preset).length) throw Error('更新包缺少配套脚本。');
     const baseline = await makeBaseline(preset);
     if (!same(meta.baseline, baseline)) throw Error('更新包的基线数据不匹配。');
     return preset;

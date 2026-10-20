@@ -13,11 +13,11 @@ win[slot]?.dispose();
 for (const id of ['nue-sl-update-entry', 'nue-sl-update-panel']) doc.getElementById(id)?.remove();
 let disposed = false, busy = false, pending = null, lastCheck = 0, retryAfter = 0, controller, generating = false;
 const checkInterval = 30 * 60 * 1000;
-const options = { rename: true, keepEdits: true, syncSettings: false };
+const options = { rename: true, keepEdits: true, syncSettings: false, repairMissingScripts: true };
 try {
     const saved = JSON.parse(win.localStorage.getItem(storageKey) ?? '{}');
     // Old autoCheck/autoApply=false must not disable the new automatic behavior.
-    for (const key of Object.keys(options)) if (typeof saved[key] === 'boolean') options[key] = saved[key];
+    for (const key of ['rename', 'keepEdits', 'syncSettings']) if (typeof saved[key] === 'boolean') options[key] = saved[key];
 } catch { /* Use defaults if previous settings were malformed. */ }
 const ctx = context(), generationEvents = [];
 for (const [key, value] of [['GENERATION_STARTED', true], ['GENERATION_ENDED', false], ['GENERATION_STOPPED', false]]) {
@@ -98,7 +98,8 @@ async function tick() {
             lastCheck = Date.now();
             const manifest = validateManifest(JSON.parse(await request('update.json')), CONFIG.presetId);
             if (disposed || !ownsSelection()) return;
-            pending = manifest.revision > metadata().revision ? manifest : null;
+            const current = snapshot().active;
+            pending = manifest.revision > metadata().revision || (manifest.revision === metadata().revision && missingRequiredScripts(current).length) ? manifest : null;
         }
         if (!pending || disposed || !ownsSelection() || !isIdle()) return;
         await exclusive(async () => {

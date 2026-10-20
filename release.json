@@ -1,11 +1,16 @@
 {
   "presetId": "nue.sl.preset",
   "version": "6.0.0",
-  "revision": 3,
+  "revision": 4,
   "displayName": "[MoM]✩‧₊SL 6.0.0 @NUE",
   "repository": "AYUUKI-K/SL-Preset",
   "branch": "main",
   "changelog": [
-    "默认空闲时自动检查并自动应用更新；旧版关闭自动应用的设置不再阻止更新。"
+    "修复配套脚本遗漏后不再恢复的问题；自动补齐头部参数与世界书脚本。",
+    "配套脚本以独立条目打包，兼容脚本分组导入；工作台增加发布包脚本清单和完整性校验。"
+  ],
+  "requiredScriptIds": [
+    "5785b764-ccc0-49e7-8f72-ada52a4ba84b",
+    "42f4d6a9-336d-4ffb-8555-3eaf8398eb00"
   ]
 }

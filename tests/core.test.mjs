@@ -1,9 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { META_KEY, UPDATER_ID, clone, makeBaseline, mergePreset, validatePreset, validateManifest, verifyPayload, flattenScripts, activePresetSnapshot } from '../src/core.mjs';
+import { META_KEY, UPDATER_ID, clone, makeBaseline, mergePreset, validatePreset, validateManifest, verifyPayload, flattenScripts, activePresetSnapshot, restoreScriptLayout, missingRequiredScripts, packageScriptTrees } from '../src/core.mjs';
 
-const built = JSON.parse(await readFile(new URL('../dist/preset.json', import.meta.url), 'utf8'));
+const exported = JSON.parse(await readFile(new URL('../dist/preset.json', import.meta.url), 'utf8'));
+const built = restoreScriptLayout(exported);
+built.extensions[META_KEY].baseline = await makeBaseline(built);
 const original = JSON.parse((await readFile(new URL('../source/preset.json', import.meta.url), 'utf8')).replace(/^\uFEFF/, ''));
 const manifest = JSON.parse(await readFile(new URL('../update.json', import.meta.url), 'utf8'));
 test('真实宿主字段别名正确映射，当前未保存编辑及未知原始字段保留', () => {
@@ -37,7 +39,7 @@ async function remote() {
 }
 
 test('包装后逐项保留原预设的提示词、参数、分组、正则和三个脚本', () => {
-    const roundtrip = clone(built);
+    const roundtrip = restoreScriptLayout(exported);
     delete roundtrip.extensions[META_KEY];
     roundtrip.extensions.tavern_helper.scripts = roundtrip.extensions.tavern_helper.scripts.filter(x => x.id !== UPDATER_ID);
     assert.deepEqual(roundtrip, original);
@@ -48,7 +50,7 @@ test('包装后逐项保留原预设的提示词、参数、分组、正则和�
 
 test('完整包摘要和版本校验通过；损坏、跨预设、缺失更新器和基线篡改被拒绝', async () => {
     const text = await readFile(new URL('../dist/preset.json', import.meta.url), 'utf8');
-    assert.deepEqual(await verifyPayload(text, manifest), built);
+    assert.deepEqual(await verifyPayload(text, manifest), exported);
     await assert.rejects(verifyPayload(text + ' ', manifest), /校验失败/);
     assert.throws(() => validateManifest({ ...manifest, presetId: 'another' }, manifest.presetId), /格式/);
     assert.throws(() => validateManifest({ ...manifest, file: 'dist/../../x.json' }, manifest.presetId), /格式/);
@@ -170,4 +172,33 @@ test('无效排序与重复 ID 被拒绝', () => {
     assert.throws(() => validatePreset(duplicate), /重复/);
     const missing = clone(built); missing.prompt_order[0].order.push({ identifier: 'not-real', enabled: true });
     assert.throws(() => validatePreset(missing), /不存在/);
+});
+test('发布包的配套脚本独立可导入，编辑时能还原源分组，分组停用状态不丢失', () => {
+    const scripts = exported.extensions.tavern_helper.scripts;
+    assert.ok(scripts.every(x => x.type === 'script' && typeof x.content === 'string'));
+    const sourceScripts = flattenScripts(original.extensions.tavern_helper.scripts).filter(x => x.type === 'script');
+    assert.deepEqual(scripts.filter(x => x.id !== UPDATER_ID).map(x => x.id), sourceScripts.map(x => x.id));
+    assert.deepEqual(exported.extensions[META_KEY].requiredScriptIds, sourceScripts.map(x => x.id));
+    const folder = { type: 'folder', id: 'test-folder', enabled: false, name: '停用分组', scripts: [clone(sourceScripts[0])] };
+    folder.scripts[0].enabled = true;
+    const packaged = packageScriptTrees([folder]); assert.equal(packaged.scripts[0].enabled, false);
+    const restored = restoreScriptLayout({ extensions: { [META_KEY]: { scriptLayout: packaged.layout }, tavern_helper: { scripts: packaged.scripts } } });
+    assert.deepEqual(restored.extensions.tavern_helper.scripts, [folder]);
+});
+test('仅剩更新器时会补回必需配套脚本，保留已有脚本的停用和数据；可选脚本删除仍受尊重', async () => {
+    const local = clone(exported), incoming = clone(exported);
+    incoming.extensions[META_KEY].revision++;
+    const required = incoming.extensions[META_KEY].requiredScriptIds;
+    assert.ok(required.length >= 2);
+    local.extensions.tavern_helper.scripts = local.extensions.tavern_helper.scripts.filter(x => x.id === UPDATER_ID);
+    assert.equal(missingRequiredScripts(local).length, required.length);
+    const repaired = (await mergePreset(local, incoming)).preset;
+    assert.deepEqual(missingRequiredScripts(repaired), []);
+    const existing = repaired.extensions.tavern_helper.scripts.find(x => x.id === required[0]);
+    existing.enabled = false; existing.data = { keep: '用户设置' };
+    const next = (await mergePreset(repaired, incoming)).preset.extensions.tavern_helper.scripts.find(x => x.id === existing.id);
+    assert.equal(next.enabled, false); assert.deepEqual(next.data, existing.data);
+    incoming.extensions[META_KEY].requiredScriptIds = required.slice(1);
+    const optional = (await mergePreset(local, incoming)).preset;
+    assert.ok(!flattenScripts(optional.extensions.tavern_helper.scripts).some(x => x.id === required[0]));
 });

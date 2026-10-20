@@ -39,6 +39,52 @@ function flattenScripts(trees) {
     return trees.flatMap(node => [node, ...(node.type === 'folder' ? flattenScripts(node.scripts ?? []) : [])]);
 }
 
+// Independent script entries also work in helper versions that cannot import folders.
+// Keep the author layout separately so the local editor can recover its groups.
+function packageScriptTrees(trees) {
+    const scripts = [], layout = [];
+    for (const node of trees) {
+        if (node.type === 'folder') {
+            const folder = { ...clone(node), scripts: [] };
+            for (const child of node.scripts ?? []) {
+                if (child.type !== 'script') throw Error('脚本分组只能包含脚本，不能嵌套分组。');
+                const enabled = node.enabled !== false && child.enabled === true;
+                scripts.push({ ...clone(child), enabled });
+                folder.scripts.push({ id: child.id, enabled: child.enabled, exportedEnabled: enabled });
+            }
+            layout.push(folder);
+        } else { scripts.push(clone(node)); layout.push({ type: 'script', id: node.id }); }
+    }
+    return { scripts, layout };
+}
+function restoreScriptLayout(preset) {
+    const result = clone(preset), layout = result.extensions?.[META_KEY]?.scriptLayout;
+    if (!Array.isArray(layout)) return result;
+    const trees = result.extensions?.tavern_helper?.scripts ?? [];
+    const byId = new Map(flattenScripts(trees).filter(x => x.type === 'script').map(x => [x.id, x]));
+    const placed = new Set(), restored = [];
+    for (const node of layout) {
+        if (node.type === 'folder') {
+            const children = (node.scripts ?? []).flatMap(ref => {
+                const script = byId.get(ref.id); if (!script || placed.has(ref.id)) return [];
+                placed.add(ref.id);
+                return [{ ...script, enabled: script.enabled === ref.exportedEnabled ? ref.enabled : script.enabled }];
+            });
+            restored.push({ ...node, scripts: children });
+        } else if (byId.has(node.id) && !placed.has(node.id)) { restored.push(byId.get(node.id)); placed.add(node.id); }
+    }
+    restored.push(...[...byId.values()].filter(x => !placed.has(x.id)));
+    result.extensions.tavern_helper.scripts = restored;
+    return result;
+}
+function missingRequiredScripts(preset) {
+    const present = new Set(flattenScripts(preset.extensions?.tavern_helper?.scripts ?? []).filter(x => x.type === 'script').map(x => x.id));
+    return (preset.extensions?.[META_KEY]?.requiredScriptIds ?? []).filter(id => !present.has(id));
+}
+function scriptReport(preset) {
+    return flattenScripts(preset.extensions?.tavern_helper?.scripts ?? []).filter(x => x.type === 'script').map(script => ({ id: script.id, name: script.name, enabled: script.enabled, updater: script.id === UPDATER_ID }));
+}
+
 function unique(items, key, label) {
     const ids = new Set();
     for (const item of items) {
@@ -100,14 +146,14 @@ function appendAnchored(result, locals, key, include = () => true) {
     return result;
 }
 
-async function mergeRecords(locals, remotes, base, key, protectedFields, keepEdits, conflicts) {
+async function mergeRecords(locals, remotes, base, key, protectedFields, keepEdits, conflicts, requiredIds = []) {
     const localMap = new Map(locals.map(x => [x[key], x]));
     const remoteIds = new Set(remotes.map(x => x[key]));
     const result = [];
     for (const remote of remotes) {
         const local = localMap.get(remote[key]);
         // A locally deleted managed item stays deleted. The updater itself is required.
-        if (!local && base[remote[key]] && remote[key] !== UPDATER_ID) continue;
+        if (!local && base[remote[key]] && remote[key] !== UPDATER_ID && !requiredIds.includes(remote[key])) continue;
         result.push(local ? await mergeFields(local, remote, base[remote[key]], protectedFields, keepEdits && remote[key] !== UPDATER_ID, conflicts) : clone(remote));
     }
     const remaining = [];
@@ -142,7 +188,7 @@ async function mergePreset(local, remote, options = {}) {
     const locals = local.extensions.tavern_helper?.scripts ?? [];
     const remotes = remote.extensions.tavern_helper?.scripts ?? [];
     // Match by ID across folders so moving a script does not lose its state.
-    const flat = await mergeRecords(flattenScripts(locals), flattenScripts(remotes), base.scripts, 'id', ['enabled', 'data', 'button', 'scripts'], keepEdits, conflicts);
+    const flat = await mergeRecords(flattenScripts(locals), flattenScripts(remotes), base.scripts, 'id', ['enabled', 'data', 'button', 'scripts'], keepEdits, conflicts, remote.extensions[META_KEY].requiredScriptIds ?? []);
     const flatMap = new Map(flat.map(x => [x.id, x]));
     const placed = new Set();
     function place(tree) {
@@ -203,6 +249,7 @@ async function verifyPayload(text, manifest) {
     const meta = preset.extensions[META_KEY];
     if (meta.revision !== manifest.revision || meta.version !== manifest.version || meta.displayName !== manifest.displayName) throw Error('更新清单与预设版本不一致。');
     if (!flattenScripts(preset.extensions.tavern_helper?.scripts ?? []).some(s => s.id === UPDATER_ID && s.enabled && typeof s.content === 'string')) throw Error('更新包缺少可用的更新脚本。');
+    if (missingRequiredScripts(preset).length) throw Error('更新包缺少配套脚本。');
     const baseline = await makeBaseline(preset);
     if (!same(meta.baseline, baseline)) throw Error('更新包的基线数据不匹配。');
     return preset;
@@ -215,7 +262,8 @@ async function installUpdate(host, remote, manifest, options) {
     const snapshot = host.snapshot();
     if (snapshot.active.extensions?.[META_KEY]?.presetId !== manifest.presetId) throw Error('请先切换到这套 SL 预设。');
     const revision = snapshot.active.extensions[META_KEY].revision;
-    if (manifest.revision <= revision) throw Error('当前版本已经是最新版本。');
+    const repairing = manifest.revision === revision && options.repairMissingScripts && missingRequiredScripts(snapshot.active).length > 0;
+    if (manifest.revision < revision || (manifest.revision === revision && !repairing)) throw Error('当前版本已经是最新版本。');
     if (!host.isIdle()) throw Error('酒馆正在生成，请等本轮结束后更新。');
     const nextName = options.rename ? manifest.displayName : snapshot.name;
     if (nextName !== snapshot.name && host.names().includes(nextName)) throw Error('新版名称已被另一份预设占用，请先改名或关闭“同步预设名称”。');
@@ -260,11 +308,11 @@ win[slot]?.dispose();
 for (const id of ['nue-sl-update-entry', 'nue-sl-update-panel']) doc.getElementById(id)?.remove();
 let disposed = false, busy = false, pending = null, lastCheck = 0, retryAfter = 0, controller, generating = false;
 const checkInterval = 30 * 60 * 1000;
-const options = { rename: true, keepEdits: true, syncSettings: false };
+const options = { rename: true, keepEdits: true, syncSettings: false, repairMissingScripts: true };
 try {
     const saved = JSON.parse(win.localStorage.getItem(storageKey) ?? '{}');
     // Old autoCheck/autoApply=false must not disable the new automatic behavior.
-    for (const key of Object.keys(options)) if (typeof saved[key] === 'boolean') options[key] = saved[key];
+    for (const key of ['rename', 'keepEdits', 'syncSettings']) if (typeof saved[key] === 'boolean') options[key] = saved[key];
 } catch { /* Use defaults if previous settings were malformed. */ }
 const ctx = context(), generationEvents = [];
 for (const [key, value] of [['GENERATION_STARTED', true], ['GENERATION_ENDED', false], ['GENERATION_STOPPED', false]]) {
@@ -345,7 +393,8 @@ async function tick() {
             lastCheck = Date.now();
             const manifest = validateManifest(JSON.parse(await request('update.json')), CONFIG.presetId);
             if (disposed || !ownsSelection()) return;
-            pending = manifest.revision > metadata().revision ? manifest : null;
+            const current = snapshot().active;
+            pending = manifest.revision > metadata().revision || (manifest.revision === metadata().revision && missingRequiredScripts(current).length) ? manifest : null;
         }
         if (!pending || disposed || !ownsSelection() || !isIdle()) return;
         await exclusive(async () => {
