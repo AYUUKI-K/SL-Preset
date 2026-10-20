@@ -24,7 +24,7 @@ function inspect(value, path = '') {
 inspect(source);
 const clean = text => text.replace(/^import .*;\r?\n/gm, '').replace(/^export /gm, '');
 const config = { presetId: release.presetId, repository: release.repository, branch: release.branch };
-const runtime = ['// SL preset updater. Generated from src/*.mjs and src/runtime.js.', '(async () => {', '"use strict";', `const CONFIG = ${JSON.stringify(config)};`, clean(await read('src/core.mjs')), clean(await read('src/transaction.mjs')), await read('src/runtime.js'), '})().catch(error => console.error("[SL 更新]", error));', ''].join('\n');
+const runtime = ['// SL preset updater. Generated from src/*.mjs and src/automatic-runtime.js.', '(async () => {', '"use strict";', `const CONFIG = ${JSON.stringify(config)};`, clean(await read('src/core.mjs')), clean(await read('src/transaction.mjs')), await read('src/automatic-runtime.js'), '})().catch(error => console.error("[SL 更新]", error));', ''].join('\n');
 const preset = structuredClone(source);
 preset.extensions ??= {};
 preset.extensions.tavern_helper ??= { scripts: [], variables: {} };
@@ -32,8 +32,8 @@ function removeUpdater(trees) { return trees.filter(s => s.id !== UPDATER_ID).ma
 preset.extensions.tavern_helper.scripts = removeUpdater(preset.extensions.tavern_helper.scripts ?? []);
 preset.extensions.tavern_helper.scripts.push({
     type: 'script', id: UPDATER_ID, enabled: true, name: 'SL · 预设在线更新', content: runtime,
-    info: 'by NUE-喵喵电波。随预设检查并更新提示词、脚本、正则和显示名称。入口在预设选择框旁。需要酒馆助手。',
-    button: { enabled: true, buttons: [] }, data: {}, export_with: { data: false, button: false },
+    info: 'by NUE-喵喵电波。默认在酒馆空闲时自动更新提示词、脚本、正则和显示名称。无按钮或面板，更新前自动备份。需要酒馆助手。',
+    button: { enabled: false, buttons: [] }, data: {}, export_with: { data: false, button: false },
 });
 preset.extensions[META_KEY] = { ...config, version: release.version, revision: release.revision, displayName: release.displayName };
 preset.extensions[META_KEY].baseline = await makeBaseline(preset);
