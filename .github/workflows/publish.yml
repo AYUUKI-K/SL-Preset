@@ -1,0 +1,42 @@
+name: Build preset
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'source/**'
+      - 'src/**'
+      - 'tools/**'
+      - 'tests/**'
+      - 'release.json'
+      - 'package.json'
+      - '.github/workflows/publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sl-preset-publish
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run build
+      - run: npm test
+      - name: Commit distribution
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add dist downloads update.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Build SL preset distribution"
+            git push
+          fi
