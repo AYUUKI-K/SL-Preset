@@ -8,7 +8,7 @@ import { META_KEY, clone, makeBaseline } from '../src/core.mjs';
 const root = new URL('../', import.meta.url);
 const current = JSON.parse(await readFile(new URL('dist/preset.json', root), 'utf8'));
 const next = clone(current), meta = next.extensions[META_KEY];
-meta.revision++; meta.version = '5.3.1'; meta.displayName = '[MoM]✩‧₊SL 5.3.1 @NUE · 自动更新';
+meta.revision++; meta.version = '5.3.2'; meta.displayName = '[MoM]✩‧₊SL 5.3.2 @NUE · 自动更新';
 next.prompts[0].name = '浏览器测试 · 新版条目';
 next.prompts[0].content = 'Browser fixture update: no real model calls.';
 next.extensions.regex_scripts[0].scriptName = '浏览器测试 · 新版正则';
@@ -20,7 +20,7 @@ const calls = [];
 let mode = 'normal';
 const html = `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SL 更新 · 本地模拟宿主</title>
 <style>body{font:16px/1.6 system-ui;margin:24px;color:#eee;background:#24242a;--SmartThemeBodyColor:#eee;--SmartThemeBlurTintColor:#24242a;--SmartThemeBorderColor:#7b7c86;--SmartThemeQuoteColor:#b3c8df}body.light{color:#25272d;background:#f5f3f0;--SmartThemeBodyColor:#25272d;--SmartThemeBlurTintColor:#f5f3f0;--SmartThemeBorderColor:#85858b;--SmartThemeQuoteColor:#b3c8df}main{max-width:650px;margin:auto}select{font:inherit;width:100%;min-height:44px;margin:12px 0}button{font:inherit;padding:10px;margin:4px}iframe{display:none}</style>
-<main><h1>SL 预设更新 · 本地模拟宿主</h1><p>仅用于验证更新和界面，不调用模型，也不运行预设原有的三个脚本。</p><label for="settings_preset_openai">预设</label><select id="settings_preset_openai"></select><button id="theme">切换深浅主题</button><button id="generate">模拟生成中 / 空闲</button><p id="result" role="status">当前：模拟 5.3.0</p></main>
+<main><h1>SL 预设更新 · 本地模拟宿主</h1><p>默认自动更新，不插入更新按钮或面板。模拟生成时等待空闲，不调用真实模型。</p><label for="settings_preset_openai">预设</label><select id="settings_preset_openai"></select><button id="theme">切换深浅主题</button><button id="generate">模拟生成中 / 空闲</button><p id="result" role="status">当前：模拟 ${current.extensions[META_KEY].version}</p></main>
 <script type="module">
 const initial=await (await fetch('/initial')).json();
 const {getPresetManager}=await import('/scripts/preset-manager.js');
