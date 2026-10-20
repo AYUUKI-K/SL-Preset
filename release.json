@@ -1,13 +1,11 @@
 {
   "presetId": "nue.sl.preset",
-  "version": "5.3.1",
-  "revision": 2,
-  "displayName": "[MoM]✩‧₊SL 5.3.1 @NUE · 自动更新",
+  "version": "6.0.0",
+  "revision": 3,
+  "displayName": "[MoM]✩‧₊SL 6.0.0 @NUE",
   "repository": "AYUUKI-K/SL-Preset",
   "branch": "main",
   "changelog": [
-    "移除 SL 更新按钮和面板，恢复酒馆原有预设栏布局。",
-    "默认空闲时自动检查并自动应用更新；旧版关闭自动应用的设置不再阻止更新。",
-    "保留更新前备份、条目开关、自定义内容、名称同步与文件校验。"
+    "默认空闲时自动检查并自动应用更新；旧版关闭自动应用的设置不再阻止更新。"
   ]
 }
