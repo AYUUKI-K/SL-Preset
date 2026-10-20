@@ -1,4 +1,4 @@
-import { META_KEY, clone, same, mergePreset } from './core.mjs';
+import { META_KEY, clone, same, mergePreset, missingRequiredScripts } from './core.mjs';
 
 // The host adapter keeps writes and the final UI reload separate. Reloading a
 // preset can destroy the updater iframe, so it must always be the last step.
@@ -6,7 +6,8 @@ export async function installUpdate(host, remote, manifest, options) {
     const snapshot = host.snapshot();
     if (snapshot.active.extensions?.[META_KEY]?.presetId !== manifest.presetId) throw Error('请先切换到这套 SL 预设。');
     const revision = snapshot.active.extensions[META_KEY].revision;
-    if (manifest.revision <= revision) throw Error('当前版本已经是最新版本。');
+    const repairing = manifest.revision === revision && options.repairMissingScripts && missingRequiredScripts(snapshot.active).length > 0;
+    if (manifest.revision < revision || (manifest.revision === revision && !repairing)) throw Error('当前版本已经是最新版本。');
     if (!host.isIdle()) throw Error('酒馆正在生成，请等本轮结束后更新。');
     const nextName = options.rename ? manifest.displayName : snapshot.name;
     if (nextName !== snapshot.name && host.names().includes(nextName)) throw Error('新版名称已被另一份预设占用，请先改名或关闭“同步预设名称”。');

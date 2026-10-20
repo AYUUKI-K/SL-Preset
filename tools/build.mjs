@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { META_KEY, UPDATER_ID, makeBaseline, validatePreset, verifyPayload } from '../src/core.mjs';
+import { META_KEY, UPDATER_ID, makeBaseline, validatePreset, verifyPayload, packageScriptTrees, scriptReport } from '../src/core.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = async file => (await readFile(resolve(root, file), 'utf8')).replace(/\r\n/g, '\n');
@@ -30,12 +30,22 @@ preset.extensions ??= {};
 preset.extensions.tavern_helper ??= { scripts: [], variables: {} };
 function removeUpdater(trees) { return trees.filter(s => s.id !== UPDATER_ID).map(s => s.type === 'folder' ? { ...s, scripts: removeUpdater(s.scripts ?? []) } : s); }
 preset.extensions.tavern_helper.scripts = removeUpdater(preset.extensions.tavern_helper.scripts ?? []);
+const packagedScripts = packageScriptTrees(preset.extensions.tavern_helper.scripts);
+preset.extensions.tavern_helper.scripts = packagedScripts.scripts;
+for (const script of packagedScripts.scripts) {
+    if (script.type !== 'script') throw Error(`无效的配套脚本类型：${script.name}`);
+    if (typeof script.content !== 'string' || !script.content.trim()) throw Error(`配套脚本正文为空：${script.name}`);
+    if (typeof script.enabled !== 'boolean') throw Error(`配套脚本缺少启用状态：${script.name}`);
+}
+const requiredScriptIds = release.requiredScriptIds ?? packagedScripts.scripts.map(x => x.id);
+if (!Array.isArray(requiredScriptIds) || requiredScriptIds.some(id => typeof id !== 'string' || !packagedScripts.scripts.some(x => x.id === id))) throw Error('发布源缺少必需配套脚本，请在工作台“配套脚本”页补齐后再发布。');
 preset.extensions.tavern_helper.scripts.push({
     type: 'script', id: UPDATER_ID, enabled: true, name: 'SL · 预设在线更新', content: runtime,
     info: 'by NUE-喵喵电波。默认在酒馆空闲时自动更新提示词、脚本、正则和显示名称。无按钮或面板，更新前自动备份。需要酒馆助手。',
     button: { enabled: false, buttons: [] }, data: {}, export_with: { data: false, button: false },
 });
-preset.extensions[META_KEY] = { ...config, version: release.version, revision: release.revision, displayName: release.displayName };
+preset.extensions[META_KEY] = { ...config, version: release.version, revision: release.revision, displayName: release.displayName,
+    requiredScriptIds, scriptLayout: packagedScripts.layout };
 preset.extensions[META_KEY].baseline = await makeBaseline(preset);
 const text = JSON.stringify(preset, null, 2) + '\n';
 const manifest = {
@@ -55,3 +65,4 @@ await writeFile(resolve(root, 'dist/preset.json'), text);
 await writeFile(resolve(root, `downloads/${release.displayName}.json`), text);
 await writeFile(resolve(root, 'update.json'), JSON.stringify(manifest, null, 2) + '\n');
 console.log(`Built ${release.displayName}: ${preset.prompts.length} prompts, ${preset.extensions.regex_scripts.length} regexes. Revision ${release.revision}.`);
+for (const script of scriptReport(preset)) console.log(`${script.updater ? '[更新器]' : '[配套脚本]'} ${script.name} · ${script.enabled ? '已启用' : '已停用'}`);

@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { clone, META_KEY, makeBaseline } from '../src/core.mjs';
+import { clone, META_KEY, makeBaseline, UPDATER_ID } from '../src/core.mjs';
 
 const bundle = await readFile(new URL('../dist/updater.js', import.meta.url), 'utf8');
 const fixture = JSON.parse(await readFile(new URL('../dist/preset.json', import.meta.url), 'utf8'));
-async function setup({ latest = false, fail = false, legacyDisabled = false } = {}) {
+async function setup({ latest = false, fail = false, legacyDisabled = false, missingScripts = false } = {}) {
     const next = clone(fixture), meta = next.extensions[META_KEY];
     if (!latest) { meta.revision++; meta.version = '5.3.2'; meta.displayName = 'SL 自动更新模拟版'; next.prompts[0].content = '新版正文'; }
     meta.baseline = await makeBaseline(next);
@@ -18,6 +18,10 @@ async function setup({ latest = false, fail = false, legacyDisabled = false } = 
     const timers = new Map(), intervals = new Map(), events = new Map(), calls = [], warnings = [], toasts = [], removed = [];
     let now = 2_000_000_000_000, timerId = 0, modal = false;
     const state = { selected: fixture.extensions[META_KEY].displayName, active: clone(fixture), presets: [clone(fixture)] };
+    if (missingScripts) {
+        state.active.extensions.tavern_helper.scripts = state.active.extensions.tavern_helper.scripts.filter(x => x.id === UPDATER_ID);
+        state.presets = [clone(state.active)];
+    }
     state.active.prompts[2].content = '用户未保存内容';
     const names = { [state.selected]: 0 }, options = [{ value: '0', textContent: state.selected }];
     const doc = {
@@ -117,4 +121,13 @@ test('网络失败后等待半小时重试，保留原预设且无失败弹窗',
 test('卸载清除定时任务和事件，后续回调不再联网', async () => {
     const f = await setup(); f.win.__NUE_SL_PRESET_UPDATER__.dispose(); await f.interval();
     assert.equal(f.events.size, 0); assert.equal(f.calls.length, 0);
+});
+test('已经是最新版但只剩更新器时，自动补齐配套脚本，提示词和个人内容不变', async () => {
+    const f = await setup({ latest: true, missingScripts: true });
+    const before = clone(f.state.active.prompts);
+    await f.startup();
+    assert.equal(f.warnings.length, 0);
+    assert.equal(f.calls.filter(x => x[0] === 'save').length, 1);
+    for (const id of fixture.extensions[META_KEY].requiredScriptIds) assert.ok(f.state.active.extensions.tavern_helper.scripts.some(x => x.id === id));
+    assert.deepEqual(f.state.active.prompts, before);
 });
