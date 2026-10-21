@@ -41,7 +41,7 @@ const requiredScriptIds = release.requiredScriptIds ?? packagedScripts.scripts.m
 if (!Array.isArray(requiredScriptIds) || requiredScriptIds.some(id => typeof id !== 'string' || !packagedScripts.scripts.some(x => x.id === id))) throw Error('发布源缺少必需配套脚本，请在工作台“配套脚本”页补齐后再发布。');
 preset.extensions.tavern_helper.scripts.push({
     type: 'script', id: UPDATER_ID, enabled: true, name: 'SL · 预设在线更新', content: runtime,
-    info: 'by NUE-喵喵电波。默认在酒馆空闲时自动更新提示词、脚本、正则和显示名称。无按钮或面板，更新前自动备份。需要酒馆助手。',
+    info: '喵喵电波-SL预设-STARLIGHT-脚本4',
     button: { enabled: false, buttons: [] }, data: {}, export_with: { data: false, button: false },
 });
 preset.extensions[META_KEY] = { ...config, version: release.version, revision: release.revision, displayName: release.displayName,
