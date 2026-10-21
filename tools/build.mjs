@@ -10,6 +10,7 @@ const release = JSON.parse(await read('release.json'));
 if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(release.repository) || !/^[A-Za-z0-9_.-]+$/.test(release.branch)) throw Error('仓库或分支格式不正确');
 if (!/^[0-9]+\.[0-9]+\.[0-9]+$/.test(release.version) || !Number.isSafeInteger(release.revision) || release.revision < 1) throw Error('版本格式不正确');
 if (typeof release.displayName !== 'string' || /[\\/\x00-\x1f]/.test(release.displayName)) throw Error('显示名称包含非法字符');
+if (!release.displayName.includes(release.version)) throw Error('酒馆显示名称必须包含当前版本号，避免更新后仍显示旧名称');
 const source = JSON.parse((await read('source/preset.json')).replace(/^\uFEFF/, ''));
 validatePreset(source);
 // Never publish proxy credentials or custom service addresses in an update package.
