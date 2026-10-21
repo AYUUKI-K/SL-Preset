@@ -2,10 +2,10 @@
   "schema": 1,
   "presetId": "nue.sl.preset",
   "version": "6.0.2",
-  "revision": 8,
+  "revision": 9,
   "displayName": "[MoM]✩‧₊SL 6.0.2 @NUE",
   "file": "dist/preset.json",
-  "sha256": "60a79717351f35a4f2e080a794e93620a09d28f8298289e27c02b987edc47576",
+  "sha256": "08c78e479aa4d89c6a17d026902437b3674de4af9b98a1ae29f09f619fc22586",
   "changelog": [
     "按完整模型词识别 gemin-4-argon（支持 -抗截断 等后缀）：4A 自动开启 Top statement2、关闭 Top statement1；其他模型反向。",
     "新增 {{sl_seeds}} 十条滚动记忆宏；记忆按聊天和当前选中的 swipe 独立回溯，切换聊天或存档不串档。"
