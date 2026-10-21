@@ -549,7 +549,7 @@
       "injection_depth": 4,
       "injection_order": 100,
       "role": "system",
-      "content": "<Prohibited Words>\nThe following terms are strictly prohibited in <content>:\n - 动作中透露出...\n - 不易...等不易开头的词汇\n - 不容...等不容开头的词汇\n - 没有...没有...只有\n - 什么一样自然\n - 极其/像……\n - {{getvar::C1}}\n - {{getvar::A4}}\n<Prohibited Words>",
+      "content": "<Prohibited Words>\nThe following terms are strictly prohibited in <content>:\n - 动作中透露出...\n - 不易...等不易开头的词汇\n - 不容...等不容开头的词汇\n - 没有...没有...只有\n - 什么一样自然\n - 极其/像……\n{{getvar::C1}}\n{{getvar::A4}}\n<Prohibited Words>",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false
