@@ -549,7 +549,7 @@
       "injection_depth": 4,
       "injection_order": 100,
       "role": "system",
-      "content": "<Prohibited Words>\nThe following terms are strictly prohibited in <content>:\n - 动作中透露出...\n - 不易...等不易开头的词汇\n - 不容...等不容开头的词汇\n - 没有...没有...只有\n - 什么一样自然\n - 极其/像……\n - {{getvar::C1}}\n - {{getvar::A4}}\n<Prohibited Words>",
+      "content": "<Prohibited Words>\nThe following terms are strictly prohibited in <content>:\n - 动作中透露出...\n - 不易...等不易开头的词汇\n - 不容...等不容开头的词汇\n - 没有...没有...只有\n - 什么一样自然\n - 极其/像……\n{{getvar::C1}}\n{{getvar::A4}}\n<Prohibited Words>",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false
@@ -1603,7 +1603,7 @@
       "repository": "AYUUKI-K/SL-Preset",
       "branch": "main",
       "version": "6.0.2",
-      "revision": 12,
+      "revision": 13,
       "displayName": "[MoM]✩‧₊SL 6.0.2 @NUE",
       "requiredScriptIds": [
         "5785b764-ccc0-49e7-8f72-ada52a4ba84b",
@@ -2121,7 +2121,7 @@
             "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
             "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
             "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "2c92519530404be1c5a446e201ed6560b27a55a9d6aa66dc63adaaf7b10f0000",
+            "content": "38eb6492fea6e8a6b3bc097fc21d6972a8b65ef588eb3c6c79c55acf8654dedc",
             "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
