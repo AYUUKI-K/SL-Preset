@@ -8,10 +8,11 @@ const script = preset.extensions.tavern_helper.scripts
     .find(item => item.type === 'folder' && item.name === 'SL')
     .scripts.find(item => item.id === '5785b764-ccc0-49e7-8f72-ada52a4ba84b').content;
 
-function createHarness(model) {
-    const document = { defaultView: null };
-    const window = { document, parent: null, addEventListener() {} };
-    document.defaultView = window;
+function createHarness(model, sharedHost = {}) {
+    const document = sharedHost.document ?? { defaultView: sharedHost };
+    sharedHost.document = document;
+    const lifecycle = new Map();
+    const window = { document: {}, parent: sharedHost, addEventListener(name, fn) { lifecycle.set(name, fn); } };
     const events = [];
     const timers = [];
     const intervals = [];
@@ -21,23 +22,23 @@ function createHarness(model) {
     let excludeBody = '';
     let savedSettings = 0;
     const prompts = [
-        { identifier: 'head-1', name: '📚Top statement1', enabled: false },
-        { identifier: 'head-2', name: '📚Top statement2', enabled: false },
-        { identifier: 'model-f', name: '🟡✧GEMINI-F/GEMINI-4A', enabled: true },
-        { identifier: 'model-p', name: '🟡✧GEMINI-P', enabled: false },
-        { identifier: 'model-glm', name: '🟡✧GLM', enabled: false },
-        { identifier: 'model-claude', name: '🟡✧CLAUDE', enabled: false },
-        { identifier: 'cot-f', name: '📌☆Skip COT-F', enabled: false },
-        { identifier: 'cot-normal', name: '📌☆Skip COT', enabled: true },
+        { id: 'head-1', name: '📚Top statement1', enabled: false },
+        { id: 'head-2', name: '📚Top statement2', enabled: false },
+        { id: 'model-f', name: '🟡✧GEMINI-F/GEMINI-4A', enabled: true },
+        { id: 'model-p', name: '🟡✧GEMINI-P', enabled: false },
+        { id: 'model-glm', name: '🟡✧GLM', enabled: false },
+        { id: 'model-claude', name: '🟡✧CLAUDE', enabled: false },
+        { id: 'cot-f', name: '📌☆Skip COT-F', enabled: false },
+        { id: 'cot-normal', name: '📌☆Skip COT', enabled: true },
     ];
     const active = {
         prompts,
-        prompt_order: [{ character_id: 100000, order: prompts.map(prompt => ({ identifier: prompt.identifier, enabled: prompt.enabled })) }],
+        prompts_unused: [], settings: {}, extensions: {},
     };
     const bindings = [];
     const jq = selector => {
         if (typeof selector === 'function') { selector(); return { length: 0 }; }
-        if (selector === document) return { on: (...args) => { bindings.push(args); } };
+        if (selector === document) return { on: (...args) => { bindings.push(args); }, off() {} };
         const isModel = selector === '#custom_model_id';
         const isExclude = selector === '#custom_exclude_body';
         return {
@@ -67,16 +68,16 @@ function createHarness(model) {
         saveSettingsDebounced: async () => { savedSettings++; },
     };
     const context = {
-        window, document, $: jq, SillyTavern,
+        window, document: window.document, $: jq, SillyTavern,
         console: { info() {}, warn() {}, error(...args) { throw new Error(args.join(' ')); } },
         toastr: { success() {} },
         tavern_events: { CHATCOMPLETION_SOURCE_CHANGED: 'source', CHATCOMPLETION_MODEL_CHANGED: 'model', SETTINGS_UPDATED: 'settings', PRESET_CHANGED: 'preset' },
         eventOn(name, handler) { events.push({ name, handler }); },
-        getPreset() { return active; },
+        getPreset() { return structuredClone(active); },
         getLoadedPresetName() { return 'SL'; },
         async updatePresetWith(name, updater) {
             updateCalls.push(name);
-            updater(active);
+            Object.assign(active, updater(structuredClone(active)));
             return active;
         },
         setTimeout(callback, delay) { const item = { callback, delay, id: timers.length + 1 }; timers.push(item); return item.id; },
@@ -101,9 +102,9 @@ function createHarness(model) {
         assert.ok(binding, `missing delegated handler for ${selector}`);
         binding.at(-1)({ target: {} });
     };
-    const prompt = id => prompts.find(item => item.identifier === id);
+    const prompt = id => active.prompts.find(item => item.id === id);
     return {
-        active, prompt, bindings, updateCalls, flushTimeouts, emitClick, setModel(value) {
+        sharedHost, lifecycle, active, prompt, bindings, updateCalls, flushTimeouts, emitClick, setModel(value) {
             modelInput = value;
             SillyTavern.chatCompletionSettings.custom_model = value;
         },
@@ -125,11 +126,7 @@ test('known 5.3 preset-toggle path and separate API header/Flash-parameter rules
     assert.equal(harness.excludeBody, '');
 
     // Simulate Tavern's active preset state after the user chooses GEMINI-P.
-    harness.prompt('model-f').enabled = false;
     harness.prompt('model-p').enabled = true;
-    for (const entry of harness.active.prompt_order[0].order) {
-        entry.enabled = entry.identifier === 'model-p';
-    }
     harness.emitClick('.prompt-manager-toggle-action');
     await harness.flushTimeouts();
     assert.equal(harness.prompt('model-f').enabled, false);
@@ -150,4 +147,35 @@ test('known 5.3 preset-toggle path and separate API header/Flash-parameter rules
     assert.equal(harness.prompt('cot-normal').enabled, true);
     assert.match(harness.excludeBody, /- top_p/);
     assert.equal(harness.savedSettings, 1);
+
+    for (const id of ['model-glm', 'model-claude', 'model-f', 'model-p']) {
+        harness.prompt(id).enabled = true;
+        harness.emitClick('.prompt-manager-toggle-action');
+        await harness.flushTimeouts();
+        for (const candidate of ['model-f', 'model-p', 'model-glm', 'model-claude']) {
+            assert.equal(harness.prompt(candidate).enabled, candidate === id);
+        }
+        assert.equal(harness.prompt('cot-f').enabled, id === 'model-f');
+        assert.equal(harness.prompt('cot-normal').enabled, id !== 'model-f');
+    }
+
+    harness.setModel('pg-gemin-4-argon-抗截断');
+    inputBinding.at(-1)();
+    await harness.flushTimeouts();
+    assert.equal(harness.prompt('head-2').enabled, true);
+    assert.equal(harness.prompt('head-1').enabled, false);
+    assert.equal(harness.excludeBody, '');
+});
+
+test('preset iframe reload starts with a fresh guard even if the previous release left a parent flag', async () => {
+    const parent = { __sl_header_adjuster_v53_linkage_initialized__: true };
+    const first = createHarness('gemini-4-argon', parent);
+    await first.flushTimeouts();
+    assert.equal(first.prompt('head-2').enabled, true);
+    first.lifecycle.get('pagehide')();
+    const reloaded = createHarness('gemini-3.8-flash', parent);
+    await reloaded.flushTimeouts();
+    assert.equal(reloaded.prompt('head-1').enabled, true);
+    assert.equal(reloaded.prompt('cot-f').enabled, true);
+    assert.match(reloaded.excludeBody, /- temperature/);
 });

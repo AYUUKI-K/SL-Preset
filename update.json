@@ -1,13 +1,14 @@
 {
   "schema": 1,
   "presetId": "nue.sl.preset",
-  "version": "6.0.7",
-  "revision": 21,
-  "displayName": "[MoM]✩‧₊SL 6.0.7 @NUE",
+  "version": "6.0.8",
+  "revision": 22,
+  "displayName": "[MoM]✩‧₊SL 6.0.8 @NUE",
   "file": "dist/preset.json",
-  "sha256": "b5d269e099825537ea41444c40f61a6106a2d4bbce6b4b7f9f3ac77f1c2e4538",
+  "sha256": "cd91d097d577b972e80ae349e89f55c36cf03a00ee4b0fcb86dd9365f69795c2",
   "changelog": [
-    "从 5.3 已验证的当前提示词开关读取方式恢复 Skip COT 联动；API 模型仅控制头部和指定 Flash 参数。",
-    "必需配套脚本正文始终随发布更新，避免显示新版本号却继续运行被保留的旧脚本；保留脚本开关和数据。"
+    "修复在线更新改名后酒馆助手预设脚本总开关丢失；仅迁移原先已经开启的许可。",
+    "修复旧实例留在父页面的永久标记阻止新版脚本启动，卸载时清理当前实例监听器和定时器。",
+    "按酒馆助手标准化 id/启用状态处理新开启的模型分区，四选一与 Skip COT 联动独立于 API 口；4A 头部2，其他头部1，仅37/38Flash填写附加参数。"
   ]
 }

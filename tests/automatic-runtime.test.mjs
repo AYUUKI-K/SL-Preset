@@ -7,7 +7,7 @@ import { clone, META_KEY, makeBaseline, UPDATER_ID } from '../src/core.mjs';
 
 const bundle = await readFile(new URL('../dist/updater.js', import.meta.url), 'utf8');
 const fixture = JSON.parse(await readFile(new URL('../dist/preset.json', import.meta.url), 'utf8'));
-async function setup({ latest = false, fail = false, legacyDisabled = false, missingScripts = false } = {}) {
+async function setup({ latest = false, fail = false, legacyDisabled = false, missingScripts = false, helperEnabled = true } = {}) {
     const next = clone(fixture), meta = next.extensions[META_KEY];
     if (!latest) { meta.revision++; meta.version = '5.3.2'; meta.displayName = 'SL 自动更新模拟版'; next.prompts[0].content = '新版正文'; }
     meta.baseline = await makeBaseline(next);
@@ -18,6 +18,10 @@ async function setup({ latest = false, fail = false, legacyDisabled = false, mis
     const timers = new Map(), intervals = new Map(), events = new Map(), calls = [], warnings = [], toasts = [], removed = [];
     let now = 2_000_000_000_000, timerId = 0, modal = false;
     const state = { selected: fixture.extensions[META_KEY].displayName, active: clone(fixture), presets: [clone(fixture)] };
+    const extensionSettings = { tavern_helper: { script: {
+        enabled: { presets: helperEnabled ? [state.selected, 'other-preset'] : ['other-preset'] },
+        popuped: { presets: [state.selected] },
+    } } };
     if (missingScripts) {
         state.active.extensions.tavern_helper.scripts = state.active.extensions.tavern_helper.scripts.filter(x => x.id === UPDATER_ID);
         state.presets = [clone(state.active)];
@@ -47,6 +51,7 @@ async function setup({ latest = false, fail = false, legacyDisabled = false, mis
         localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => { calls.push(['storage', key]); storage.set(key, value); } },
         SillyTavern: { getContext: () => ({
             mainApi: 'openai', chatCompletionSettings: state.active, getPresetManager: () => manager,
+            extensionSettings, saveSettingsDebounced: () => calls.push(['save-settings']),
             getRequestHeaders: () => ({}), eventTypes: { GENERATION_STARTED: 'start', GENERATION_ENDED: 'end', GENERATION_STOPPED: 'stop' },
             eventSource: { on: (key, handler) => events.set(key, handler), removeListener: key => events.delete(key) },
         }) },
@@ -69,7 +74,7 @@ async function setup({ latest = false, fail = false, legacyDisabled = false, mis
     const startup = [...timers.values()].find(x => x.delay === 8000)?.fn;
     const interval = [...intervals.values()].find(x => x.delay === 30000)?.fn;
     assert.equal(typeof startup, 'function'); assert.equal(typeof interval, 'function');
-    return { startup, interval, state, calls, storage, warnings, toasts, removed, events, win, doc,
+    return { startup, interval, state, calls, storage, warnings, toasts, removed, events, win, doc, extensionSettings,
         advance: ms => { now += ms; }, modal: value => { modal = value; } };
 }
 
@@ -93,6 +98,17 @@ test('生成中不检查或写入；结束后下一次空闲检查自动应用',
     await f.startup(); assert.equal(f.calls.length, 0);
     f.events.get('end')();
     await f.interval(); assert.equal(f.state.selected, 'SL 自动更新模拟版');
+});
+
+test('在线更新改名后保留酒馆助手已开启的预设脚本总开关，不擅自开启停用状态', async () => {
+    for (const helperEnabled of [true, false]) {
+        const f = await setup({ helperEnabled });
+        await f.startup();
+        const script = f.extensionSettings.tavern_helper.script;
+        assert.equal(script.enabled.presets.includes(f.state.selected), helperEnabled);
+        assert.ok(script.enabled.presets.includes('other-preset'));
+        assert.ok(script.popuped.presets.includes(f.state.selected));
+    }
 });
 
 test('其他弹窗打开时等待，关闭后自动应用', async () => {

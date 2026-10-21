@@ -58,6 +58,10 @@ const host = {
     },
     activate(oldName, newName, value, retainOld) {
         const { presets, preset_names } = manager.getPresetList();
+        const currentContext = context();
+        if (carryHelperPresetConsent(currentContext.extensionSettings, oldName, newName)) {
+            currentContext.saveSettingsDebounced?.();
+        }
         win.__NUE_SL_REFRESH_REQUIRED__ = true;
         const oldIndex = preset_names[oldName];
         if (newName !== oldName && retainOld) { manager.updateList(newName, clone(value)); return; }
