@@ -496,7 +496,7 @@
       "injection_depth": 4,
       "injection_order": 100,
       "role": "system",
-      "content": "<Summary>\nWhenever ELLA creates a star, append this format after the story content:\n<seed_update>\nseed_update:<sl_seed_update>{本轮}</sl_seed_update>\n</seed_update>\n<meow_FM>\nserial:☆Star No.X (start from 0 and increment by 1 each time)\ntime:{年份-日期 | 时间段 | 星期 | 天气}\nscene:{地点}\nplot:{事件叙述，包含情绪与关键对白}\nseeds:\\{\\{sl_seeds\\}\\}\n</meow_FM>\n\nNotes:\n - All generated content inside the { } fields must be in Simplified Chinese.\n - Keep the timeline realistic, with approximately 3–5 minutes passing per interaction.\n - Include 1–2 key dialogue lines each time ELLA creates a star.\n\nThe plot must include:\n - Emotions: (NPC name: emotion)\n - Dialogue: (NPC name: \"line\")\n\nFor each normal roleplay reply:\n - Output zero or one new seed inside <sl_seed_update>...</sl_seed_update>. Only add one when this turn contains a durable fact, event, relationship change, promise, or foreshadowing worth remembering.\n - If there is nothing worth saving, omit the entire <seed_update> line. Do not output an empty tag or write “none.”\n - Keep any seed concise, with no more than 15 Chinese characters.\n - Quiet utility generations that are not roleplay replies must not include a seed tag.\n - Seed updates do not require any specific ordering; you simply need to provide the content.\n</Summary>{{setvar::summary::Summary}}",
+      "content": "<Summary>\nWhenever ELLA creates a star, append this format after the story content:\n<seed_update>\nseed_update:<sl_seed_update>{本轮}</sl_seed_update>\n</seed_update>\n<meow_FM>\nserial:☆Star No.X (start from 0 and increment by 1 each time)\ntime:{年份-日期 | 时间段 | 星期 | 天气}\nscene:{地点}\nplot:{事件叙述，包含情绪与关键对白}\nseeds:(此处留空)\n</meow_FM>\n\nNotes:\n - All generated content inside the { } fields must be in Simplified Chinese.\n - Keep the timeline realistic, with approximately 3–5 minutes passing per interaction.\n - Include 1–2 key dialogue lines each time ELLA creates a star.\n\nThe plot must include:\n - Emotions: (NPC name: emotion)\n - Dialogue: (NPC name: \"line\")\n\nFor each normal roleplay reply:\n - Output zero or one new seed inside <sl_seed_update>...</sl_seed_update>. Only add one when this turn contains a durable fact, event, relationship change, promise, or foreshadowing worth remembering.\n - If there is nothing worth saving, omit the entire <seed_update> line. Do not output an empty tag or write “none.”\n - Keep any seed concise, with no more than 15 Chinese characters.\n - Quiet utility generations that are not roleplay replies must not include a seed tag.\n - Seed updates do not require any specific ordering; you simply need to provide the content.\n</Summary>{{setvar::summary::Summary}}",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false
@@ -1603,7 +1603,7 @@
       "repository": "AYUUKI-K/SL-Preset",
       "branch": "main",
       "version": "6.0.3",
-      "revision": 16,
+      "revision": 17,
       "displayName": "[MoM]✩‧₊SL 6.0.3 @NUE",
       "requiredScriptIds": [
         "5785b764-ccc0-49e7-8f72-ada52a4ba84b",
@@ -2072,7 +2072,7 @@
             "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
             "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
             "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "b74be3959d9073a2368dd549555cd1a9dd5149aae1dcdb3eaab63ec532dec3f7",
+            "content": "c20370449e710f4db90976b2447828d5dcb2de233f4cdf91048d73ff2f73a4a3",
             "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"

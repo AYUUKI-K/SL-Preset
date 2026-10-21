@@ -2,10 +2,10 @@
   "schema": 1,
   "presetId": "nue.sl.preset",
   "version": "6.0.3",
-  "revision": 16,
+  "revision": 17,
   "displayName": "[MoM]✩‧₊SL 6.0.3 @NUE",
   "file": "dist/preset.json",
-  "sha256": "58529420ba17bdcb7c7825b74f3b6a911932855e533f09638c7574f54d677a54",
+  "sha256": "4bfc75b9cd78b0666249865c54d333b4d09349ba4280ec9bea65d1ff00ac8c94",
   "changelog": [
     "修正酒馆中的预设显示名称，使其与 6.0.3 版本号一致。"
   ]
