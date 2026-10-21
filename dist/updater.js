@@ -7,6 +7,23 @@ const UPDATER_ID = '9c79fdb7-86b1-4aec-9d6e-75992c4e8301';
 const clone = value => JSON.parse(JSON.stringify(value));
 const same = (a, b) => canonical(a) === canonical(b);
 
+// Tavern Helper records preset-script consent by the preset's display name.
+// Carry consent forward only when the old name was already enabled.
+function carryHelperPresetConsent(settings, oldName, newName) {
+    if (!settings || oldName === newName) return false;
+    let changed = false;
+    for (const key of ['tavern_helper', 'TavernHelper']) {
+        const script = settings[key]?.script;
+        for (const list of [script?.enabled?.presets, script?.popuped?.presets]) {
+            if (Array.isArray(list) && list.includes(oldName) && !list.includes(newName)) {
+                list.push(newName);
+                changed = true;
+            }
+        }
+    }
+    return changed;
+}
+
 // Read through the host's public context, without importing ST modules into the
 // helper iframe (which would instantiate a second, empty module state).
 function activePresetSnapshot(saved, settings) {
@@ -357,6 +374,10 @@ const host = {
     },
     activate(oldName, newName, value, retainOld) {
         const { presets, preset_names } = manager.getPresetList();
+        const currentContext = context();
+        if (carryHelperPresetConsent(currentContext.extensionSettings, oldName, newName)) {
+            currentContext.saveSettingsDebounced?.();
+        }
         win.__NUE_SL_REFRESH_REQUIRED__ = true;
         const oldIndex = preset_names[oldName];
         if (newName !== oldName && retainOld) { manager.updateList(newName, clone(value)); return; }

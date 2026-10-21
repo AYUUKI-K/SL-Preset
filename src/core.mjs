@@ -3,6 +3,23 @@ export const UPDATER_ID = '9c79fdb7-86b1-4aec-9d6e-75992c4e8301';
 export const clone = value => JSON.parse(JSON.stringify(value));
 export const same = (a, b) => canonical(a) === canonical(b);
 
+// Tavern Helper records preset-script consent by the preset's display name.
+// Carry consent forward only when the old name was already enabled.
+export function carryHelperPresetConsent(settings, oldName, newName) {
+    if (!settings || oldName === newName) return false;
+    let changed = false;
+    for (const key of ['tavern_helper', 'TavernHelper']) {
+        const script = settings[key]?.script;
+        for (const list of [script?.enabled?.presets, script?.popuped?.presets]) {
+            if (Array.isArray(list) && list.includes(oldName) && !list.includes(newName)) {
+                list.push(newName);
+                changed = true;
+            }
+        }
+    }
+    return changed;
+}
+
 // Read through the host's public context, without importing ST modules into the
 // helper iframe (which would instantiate a second, empty module state).
 export function activePresetSnapshot(saved, settings) {
