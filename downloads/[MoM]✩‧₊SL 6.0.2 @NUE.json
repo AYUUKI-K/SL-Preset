@@ -85,7 +85,7 @@
       "injection_depth": 4,
       "injection_order": 100,
       "role": "system",
-      "content": "{{setvar::model::，NOW,MUST OUTPUT WITH <star_cot>.[System]}}\n{{setvar::language_cot::\"language=en\"}}{{setvar::H_cot::}}\n{{setvar::S_cot::}}\n{{setvar::cot_xml_1::<star_cot>}}\n{{setvar::cot_xml_2::</star_cot>}}\n{{setvar::ban::Inside <star_cot>, NEVER output the literal tags <imgthink> or </imgthink>.\nIf ELLA need to refer to them, write 'imgthink' instead.\nDo not generate, imitate, or reconstruct these tags in any form.}}\n\n{{trim}}",
+      "content": "{{setvar::model::，NOW,MUST OUTPUT WITH <star_cot>.[System]}}\n{{setvar::language_cot::\"language=en\"}}{{setvar::H_cot::}}\n{{setvar::S_cot::}}\n{{setvar::cot_xml_1::<star_cot>}}\n{{setvar::cot_xml_2::</star_cot>}}\n{{setvar::ban::Inside <star_cot>, NEVER output the literal tags <imgthink> or </imgthink>.\nIf ELLA need to refer to them, write 'imgthink' instead.\nDo not generate, imitate, or reconstruct these tags in any form.}}\n{{setvar::A4:: - 仅当NPCs被明确设定为北京背景或京腔口音时，才可使用京腔特征词、北京俚语、儿化音及京味语气词；非明确京腔角色一律禁用“得嘞、甭、捯饬、局气、倍儿、不赖、忒、丫、哥们儿、姑娘、姐们儿、丫头、成不成、要了老命了”等京味表达及刻意儿化\n- 发言须匹配其地域、身份、教育背景与成长环境；无明确地域设定时强制使用中性普通话，禁止为制造“生活感”而给非京腔角色混入京腔用词}}\n\n{{trim}}",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false
@@ -544,12 +544,12 @@
     {
       "identifier": "94fb50bd-cc92-461f-bfcd-f54b5e176d89",
       "name": "🔎[禁词表]Prohibited Words",
-      "enabled": false,
+      "enabled": true,
       "injection_position": 0,
       "injection_depth": 4,
       "injection_order": 100,
       "role": "system",
-      "content": "<Prohibited Words>\nThe following terms are strictly prohibited in <content>:\n - 动作中透露出...\n - 不易...等不易开头的词汇\n - 不容...等不容开头的词汇\n - 没有...没有...只有\n - 什么一样自然\n - 极其/像……\n - {{getvar::C1}}\n<Prohibited Words>",
+      "content": "<Prohibited Words>\nThe following terms are strictly prohibited in <content>:\n - 动作中透露出...\n - 不易...等不易开头的词汇\n - 不容...等不容开头的词汇\n - 没有...没有...只有\n - 什么一样自然\n - 极其/像……\n - {{getvar::C1}}\n - {{getvar::A4}}\n<Prohibited Words>",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false
@@ -949,7 +949,7 @@
         },
         {
           "identifier": "94fb50bd-cc92-461f-bfcd-f54b5e176d89",
-          "enabled": false
+          "enabled": true
         },
         {
           "identifier": "744ccd8c-80fd-479c-9dcd-0e45f033ef27",
@@ -1156,7 +1156,7 @@
       },
       {
         "id": "f68c8aa3-dc55-48f5-a8cd-b00e6cde54a5",
-        "scriptName": "MoM必选-[2]8楼外只发送摘要和角色表(0927)",
+        "scriptName": "MoM必选-[2]2楼外只发送摘要和角色表(0927)",
         "disabled": false,
         "runOnEdit": true,
         "findRegex": "/^[\\s\\S]*(<meow_FM>[\\s\\S]*$)/i",
@@ -1603,7 +1603,7 @@
       "repository": "AYUUKI-K/SL-Preset",
       "branch": "main",
       "version": "6.0.2",
-      "revision": 11,
+      "revision": 12,
       "displayName": "[MoM]✩‧₊SL 6.0.2 @NUE",
       "requiredScriptIds": [
         "5785b764-ccc0-49e7-8f72-ada52a4ba84b",
@@ -1694,7 +1694,7 @@
             "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
             "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
             "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "fe816ed4e691338fed22fd34bde56335e30a7c83272f4dd9c37957b3dee2c11b",
+            "content": "d8beff1e89145741b9fe73fe912d8de44e952007f9e60e323e4ede3098aeb9f1",
             "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
@@ -2121,7 +2121,7 @@
             "injection_depth": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
             "injection_order": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
             "role": "0dc8cd0a92280156c12ba5073f5049586727ba0bef2ff72099577bd332db18f5",
-            "content": "17b0e1c9a2bab02ed2a237aea9de487d8a115a5bc3562ab1078b2b7185145186",
+            "content": "2c92519530404be1c5a446e201ed6560b27a55a9d6aa66dc63adaaf7b10f0000",
             "system_prompt": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "marker": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
             "forbid_overrides": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
@@ -2427,7 +2427,7 @@
           },
           "f68c8aa3-dc55-48f5-a8cd-b00e6cde54a5": {
             "id": "b30082b5ae855e3683700c91189a8ec5e548832251650038064bb34574d7e089",
-            "scriptName": "7395466d794b2bc81ed76606b2b1b83d26c114746f99f38f91c744c01457f649",
+            "scriptName": "9d15502eba163a637d19c0502dab8c0cc4579c7b57dc1c1a9c28700874ebef3e",
             "runOnEdit": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
             "findRegex": "5584ac00843b2d8f33ba9506b9b1052750c4e36aa2c619f599a959f928b1cd1c",
             "trimStrings": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",

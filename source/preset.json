@@ -85,7 +85,7 @@
       "injection_depth": 4,
       "injection_order": 100,
       "role": "system",
-      "content": "{{setvar::model::，NOW,MUST OUTPUT WITH <star_cot>.[System]}}\n{{setvar::language_cot::\"language=en\"}}{{setvar::H_cot::}}\n{{setvar::S_cot::}}\n{{setvar::cot_xml_1::<star_cot>}}\n{{setvar::cot_xml_2::</star_cot>}}\n{{setvar::ban::Inside <star_cot>, NEVER output the literal tags <imgthink> or </imgthink>.\nIf ELLA need to refer to them, write 'imgthink' instead.\nDo not generate, imitate, or reconstruct these tags in any form.}}\n\n{{trim}}",
+      "content": "{{setvar::model::，NOW,MUST OUTPUT WITH <star_cot>.[System]}}\n{{setvar::language_cot::\"language=en\"}}{{setvar::H_cot::}}\n{{setvar::S_cot::}}\n{{setvar::cot_xml_1::<star_cot>}}\n{{setvar::cot_xml_2::</star_cot>}}\n{{setvar::ban::Inside <star_cot>, NEVER output the literal tags <imgthink> or </imgthink>.\nIf ELLA need to refer to them, write 'imgthink' instead.\nDo not generate, imitate, or reconstruct these tags in any form.}}\n{{setvar::A4:: - 仅当NPCs被明确设定为北京背景或京腔口音时，才可使用京腔特征词、北京俚语、儿化音及京味语气词；非明确京腔角色一律禁用“得嘞、甭、捯饬、局气、倍儿、不赖、忒、丫、哥们儿、姑娘、姐们儿、丫头、成不成、要了老命了”等京味表达及刻意儿化\n- 发言须匹配其地域、身份、教育背景与成长环境；无明确地域设定时强制使用中性普通话，禁止为制造“生活感”而给非京腔角色混入京腔用词}}\n\n{{trim}}",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false
@@ -544,12 +544,12 @@
     {
       "identifier": "94fb50bd-cc92-461f-bfcd-f54b5e176d89",
       "name": "🔎[禁词表]Prohibited Words",
-      "enabled": false,
+      "enabled": true,
       "injection_position": 0,
       "injection_depth": 4,
       "injection_order": 100,
       "role": "system",
-      "content": "<Prohibited Words>\nThe following terms are strictly prohibited in <content>:\n - 动作中透露出...\n - 不易...等不易开头的词汇\n - 不容...等不容开头的词汇\n - 没有...没有...只有\n - 什么一样自然\n - 极其/像……\n - {{getvar::C1}}\n<Prohibited Words>",
+      "content": "<Prohibited Words>\nThe following terms are strictly prohibited in <content>:\n - 动作中透露出...\n - 不易...等不易开头的词汇\n - 不容...等不容开头的词汇\n - 没有...没有...只有\n - 什么一样自然\n - 极其/像……\n - {{getvar::C1}}\n - {{getvar::A4}}\n<Prohibited Words>",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false
@@ -949,7 +949,7 @@
         },
         {
           "identifier": "94fb50bd-cc92-461f-bfcd-f54b5e176d89",
-          "enabled": false
+          "enabled": true
         },
         {
           "identifier": "744ccd8c-80fd-479c-9dcd-0e45f033ef27",
@@ -1156,7 +1156,7 @@
       },
       {
         "id": "f68c8aa3-dc55-48f5-a8cd-b00e6cde54a5",
-        "scriptName": "MoM必选-[2]8楼外只发送摘要和角色表(0927)",
+        "scriptName": "MoM必选-[2]2楼外只发送摘要和角色表(0927)",
         "disabled": false,
         "runOnEdit": true,
         "findRegex": "/^[\\s\\S]*(<meow_FM>[\\s\\S]*$)/i",
