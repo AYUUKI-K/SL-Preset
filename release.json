@@ -1,16 +1,17 @@
 {
   "presetId": "nue.sl.preset",
-  "version": "6.0.0",
-  "revision": 4,
-  "displayName": "[MoM]✩‧₊SL 6.0.0 @NUE",
+  "version": "6.0.2",
+  "revision": 6,
+  "displayName": "[MoM]✩‧₊SL 6.0.2 @NUE",
   "repository": "AYUUKI-K/SL-Preset",
   "branch": "main",
   "changelog": [
-    "修复配套脚本遗漏后不再恢复的问题；自动补齐头部参数与世界书脚本。",
-    "配套脚本以独立条目打包，兼容脚本分组导入；工作台增加发布包脚本清单和完整性校验。"
+    "按完整模型词识别 gemin-4-argon（支持 -抗截断 等后缀）：4A 自动开启 Top statement2、关闭 Top statement1；其他模型反向。",
+    "新增 {{sl_seeds}} 十条滚动记忆宏；记忆按聊天和当前选中的 swipe 独立回溯，切换聊天或存档不串档。"
   ],
   "requiredScriptIds": [
     "5785b764-ccc0-49e7-8f72-ada52a4ba84b",
-    "42f4d6a9-336d-4ffb-8555-3eaf8398eb00"
+    "42f4d6a9-336d-4ffb-8555-3eaf8398eb00",
+    "e95ae80d-0fcb-4316-84ea-8dcca41b5be8"
   ]
 }

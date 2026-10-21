@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "presetId": "nue.sl.preset",
-  "version": "6.0.0",
-  "revision": 4,
-  "displayName": "[MoM]✩‧₊SL 6.0.0 @NUE",
+  "version": "6.0.2",
+  "revision": 6,
+  "displayName": "[MoM]✩‧₊SL 6.0.2 @NUE",
   "file": "dist/preset.json",
-  "sha256": "8c5ca1b71b8d7f9de9a9097c1f571157b8ee3de2cc1e8996859ccaa6d02b1422",
+  "sha256": "e7c15e975b7747b0e8f1ba1483a2539b458e0e862e39999d772192f1b39ea7f0",
   "changelog": [
-    "修复配套脚本遗漏后不再恢复的问题；自动补齐头部参数与世界书脚本。",
-    "配套脚本以独立条目打包，兼容脚本分组导入；工作台增加发布包脚本清单和完整性校验。"
+    "按完整模型词识别 gemin-4-argon（支持 -抗截断 等后缀）：4A 自动开启 Top statement2、关闭 Top statement1；其他模型反向。",
+    "新增 {{sl_seeds}} 十条滚动记忆宏；记忆按聊天和当前选中的 swipe 独立回溯，切换聊天或存档不串档。"
   ]
 }
