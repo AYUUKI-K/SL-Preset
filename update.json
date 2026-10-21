@@ -2,9 +2,9 @@
   "schema": 1,
   "presetId": "nue.sl.preset",
   "version": "6.0.3",
-  "revision": 14,
+  "revision": 15,
   "displayName": "[MoM]✩‧₊SL 6.0.2 @NUE",
   "file": "dist/preset.json",
-  "sha256": "b1d2af69e9bb6e53393b34ff061839b45a0361421177affdbc5a897549905d20",
+  "sha256": "39516394eae68d2d230c6d94ff7c0a6e392503143d50510f79bcca2d6c4197ae",
   "changelog": []
 }
