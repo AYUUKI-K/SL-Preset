@@ -1,13 +1,13 @@
 {
   "presetId": "nue.sl.preset",
-  "version": "6.0.5",
-  "revision": 19,
-  "displayName": "[MoM]✩‧₊SL 6.0.5 @NUE",
+  "version": "6.0.6",
+  "revision": 20,
+  "displayName": "[MoM]✩‧₊SL 6.0.6 @NUE",
   "repository": "AYUUKI-K/SL-Preset",
   "branch": "main",
   "changelog": [
-    "修复按 API 连接模型自动切换 GEMINI-P、GLM、CLAUDE 与 GEMINI-F/GEMINI-4A 提示词及 COT 头部；补充模型切换监听兜底。",
-    "采样参数自动填写仅适用于 Gemini 3.8 Flash 和 Gemini 3.7 Flash；4A 不再触发参数配置。"
+    "拆分 API 连接与预设选项两套切换：API 只控制 4A/非 4A 头部及 3.8/3.7 Flash 参数；预设选项独立控制四个模型分区与对应 COT。",
+    "同步提示词开关到 prompt_order，修复酒馆界面状态不随脚本更新；自定义模型优先读取连接页实时输入。"
   ],
   "requiredScriptIds": [
     "5785b764-ccc0-49e7-8f72-ada52a4ba84b",
