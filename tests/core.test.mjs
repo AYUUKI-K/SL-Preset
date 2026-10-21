@@ -63,6 +63,7 @@ test('无本地修改时更新正文和各类名称；保留开关、脚本数�
     local.temperature = 0.32;
     local.prompt_order[0].order[0].enabled = false;
     local.extensions.regex_scripts[0].disabled = true;
+    local.extensions.tavern_helper.scripts[0].scripts[0].enabled = false;
     local.extensions.tavern_helper.scripts[0].scripts[0].data = { userSetting: 42 };
     local.extensions.tavern_helper.variables.custom = 'keep';
     local.extensions.someOtherPlugin = { x: 5 };
@@ -73,6 +74,7 @@ test('无本地修改时更新正文和各类名称；保留开关、脚本数�
     assert.equal(preset.extensions.regex_scripts[0].disabled, true);
     assert.equal(preset.prompt_order[0].order[0].enabled, false);
     assert.equal(preset.extensions.tavern_helper.scripts[0].scripts[0].content, 'new-script-code');
+    assert.equal(preset.extensions.tavern_helper.scripts[0].scripts[0].enabled, false);
     assert.deepEqual(preset.extensions.tavern_helper.scripts[0].scripts[0].data, { userSetting: 42 });
     assert.equal(preset.extensions.tavern_helper.scripts[0].name, '新版脚本分组');
     assert.equal(preset.extensions.tavern_helper.variables.custom, 'keep');
@@ -83,7 +85,7 @@ test('无本地修改时更新正文和各类名称；保留开关、脚本数�
     assert.equal(synced.preset.temperature, incoming.temperature);
 });
 
-test('字段级合并保留用户改写的正文，但仍更新作者名称；可选择覆盖修改', async () => {
+test('保留用户自定义提示词与正则；必需配套脚本始终更新到发布源码', async () => {
     const local = clone(built), incoming = await remote();
     local.prompts[0].content = '我的提示词';
     local.extensions.regex_scripts[0].replaceString = '我的美化';
@@ -92,8 +94,8 @@ test('字段级合并保留用户改写的正文，但仍更新作者名称；�
     assert.equal(merged.preset.prompts[0].content, '我的提示词');
     assert.equal(merged.preset.prompts[0].name, '作者更新后的名称');
     assert.equal(merged.preset.extensions.regex_scripts[0].replaceString, '我的美化');
-    assert.equal(merged.preset.extensions.tavern_helper.scripts[0].scripts[0].content, '我的脚本');
-    assert.equal(merged.conflicts.length, 3);
+    assert.equal(merged.preset.extensions.tavern_helper.scripts[0].scripts[0].content, 'new-script-code');
+    assert.equal(merged.conflicts.length, 2);
     const forced = await mergePreset(local, incoming, { keepEdits: false });
     assert.equal(forced.preset.prompts[0].content, incoming.prompts[0].content);
     assert.equal(forced.preset.extensions.regex_scripts[0].replaceString, incoming.extensions.regex_scripts[0].replaceString);

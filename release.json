@@ -1,13 +1,13 @@
 {
   "presetId": "nue.sl.preset",
-  "version": "6.0.6",
-  "revision": 20,
-  "displayName": "[MoM]✩‧₊SL 6.0.6 @NUE",
+  "version": "6.0.7",
+  "revision": 21,
+  "displayName": "[MoM]✩‧₊SL 6.0.7 @NUE",
   "repository": "AYUUKI-K/SL-Preset",
   "branch": "main",
   "changelog": [
-    "拆分 API 连接与预设选项两套切换：API 只控制 4A/非 4A 头部及 3.8/3.7 Flash 参数；预设选项独立控制四个模型分区与对应 COT。",
-    "同步提示词开关到 prompt_order，修复酒馆界面状态不随脚本更新；自定义模型优先读取连接页实时输入。"
+    "从 5.3 已验证的当前提示词开关读取方式恢复 Skip COT 联动；API 模型仅控制头部和指定 Flash 参数。",
+    "必需配套脚本正文始终随发布更新，避免显示新版本号却继续运行被保留的旧脚本；保留脚本开关和数据。"
   ],
   "requiredScriptIds": [
     "5785b764-ccc0-49e7-8f72-ada52a4ba84b",

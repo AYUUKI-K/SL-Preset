@@ -150,7 +150,11 @@ async function mergeRecords(locals, remotes, base, key, protectedFields, keepEdi
         const local = localMap.get(remote[key]);
         // A locally deleted managed item stays deleted. The updater itself is required.
         if (!local && base[remote[key]] && remote[key] !== UPDATER_ID && !requiredIds.includes(remote[key])) continue;
-        result.push(local ? await mergeFields(local, remote, base[remote[key]], protectedFields, keepEdits && remote[key] !== UPDATER_ID, conflicts) : clone(remote));
+        // Required author scripts are the executable update payload. Always take
+        // their published source so an old locally edited body cannot leave the
+        // preset showing a new release number while still running stale code.
+        const keepLocalFields = keepEdits && remote[key] !== UPDATER_ID && !requiredIds.includes(remote[key]);
+        result.push(local ? await mergeFields(local, remote, base[remote[key]], protectedFields, keepLocalFields, conflicts) : clone(remote));
     }
     const remaining = [];
     for (const local of locals.filter(x => !remoteIds.has(x[key]))) {
