@@ -1,14 +1,11 @@
 {
   "presetId": "nue.sl.preset",
-  "version": "6.0.2",
-  "revision": 13,
+  "version": "6.0.3",
+  "revision": 14,
   "displayName": "[MoM]✩‧₊SL 6.0.2 @NUE",
   "repository": "AYUUKI-K/SL-Preset",
   "branch": "main",
-  "changelog": [
-    "按完整模型词识别 gemin-4-argon（支持 -抗截断 等后缀）：4A 自动开启 Top statement2、关闭 Top statement1；其他模型反向。",
-    "新增 {{sl_seeds}} 十条滚动记忆宏；记忆按聊天和当前选中的 swipe 独立回溯，切换聊天或存档不串档。"
-  ],
+  "changelog": [],
   "requiredScriptIds": [
     "5785b764-ccc0-49e7-8f72-ada52a4ba84b",
     "42f4d6a9-336d-4ffb-8555-3eaf8398eb00",
