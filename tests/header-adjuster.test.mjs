@@ -116,54 +116,44 @@ function createHarness(model, sharedHost = {}) {
     };
 }
 
-test('known 5.3 preset-toggle path and separate API header/Flash-parameter rules', async () => {
-    const harness = createHarness('gemini-4-argon-抗截断');
+test('API model alone selects the family, header, and COT tail across repeated switches', async () => {
+    const harness = createHarness('pg-gemini-4-argon-抗截断');
     await harness.flushTimeouts();
-    assert.equal(harness.prompt('head-1').enabled, false);
-    assert.equal(harness.prompt('head-2').enabled, true);
-    assert.equal(harness.prompt('cot-f').enabled, true);
-    assert.equal(harness.prompt('cot-normal').enabled, false);
-    assert.equal(harness.excludeBody, '');
-
-    // Simulate Tavern's active preset state after the user chooses GEMINI-P.
-    harness.prompt('model-p').enabled = true;
-    harness.emitClick('.prompt-manager-toggle-action');
-    await harness.flushTimeouts();
-    assert.equal(harness.prompt('model-f').enabled, false);
-    assert.equal(harness.prompt('model-p').enabled, true);
-    assert.equal(harness.prompt('cot-f').enabled, false);
-    assert.equal(harness.prompt('cot-normal').enabled, true);
-    assert.equal(harness.prompt('head-2').enabled, true, 'API model should control the header independently');
-
-    harness.setModel('gemini-3.7-flash');
-    const inputBinding = harness.bindings.find(([, delegated]) => delegated === '#custom_model_id, #model_custom_select');
-    assert.ok(inputBinding);
-    assert.equal(harness.modelInput, 'gemini-3.7-flash');
-    inputBinding.at(-1)();
-    await harness.flushTimeouts();
-    assert.equal(harness.prompt('head-1').enabled, true, JSON.stringify({ calls: harness.updateCalls, modelReads: harness.modelReads, head1: harness.prompt('head-1'), head2: harness.prompt('head-2') }));
-    assert.equal(harness.prompt('head-2').enabled, false);
-    assert.equal(harness.prompt('model-p').enabled, true);
-    assert.equal(harness.prompt('cot-normal').enabled, true);
-    assert.match(harness.excludeBody, /- top_p/);
-    assert.equal(harness.savedSettings, 1);
-
-    for (const id of ['model-glm', 'model-claude', 'model-f', 'model-p']) {
-        harness.prompt(id).enabled = true;
-        harness.emitClick('.prompt-manager-toggle-action');
-        await harness.flushTimeouts();
-        for (const candidate of ['model-f', 'model-p', 'model-glm', 'model-claude']) {
-            assert.equal(harness.prompt(candidate).enabled, candidate === id);
+    const input = harness.bindings.find(([, selector]) => selector === '#custom_model_id, #model_custom_select').at(-1);
+    const cases = [
+        ['pg-gemini-4-argon-抗截断', 'model-f', true, false],
+        ['gemini-3.7-flash', 'model-f', false, true],
+        ['gemini-3.8-pro', 'model-p', false, false],
+        ['gmnpro', 'model-p', false, false],
+        ['gmn-3.8', 'model-f', false, false],
+        ['zai-org/GLM-4.7', 'model-glm', false, false],
+        ['claude-sonnet-4-5', 'model-claude', false, false],
+        ['anthropic/opus-4.5', 'model-claude', false, false],
+        ['gemin-4-argon', 'model-f', true, false],
+        ['google/gemini-3.8-flash', 'model-f', false, true],
+    ];
+    for (const [model, selectedId, argon, parameters] of cases) {
+        harness.setModel(model); input(); await harness.flushTimeouts();
+        for (const id of ['model-f', 'model-p', 'model-glm', 'model-claude']) {
+            assert.equal(harness.prompt(id).enabled, id === selectedId, model + ': ' + id);
         }
-        assert.equal(harness.prompt('cot-f').enabled, id === 'model-f');
-        assert.equal(harness.prompt('cot-normal').enabled, id !== 'model-f');
+        assert.equal(harness.prompt('cot-f').enabled, selectedId === 'model-f', model);
+        assert.equal(harness.prompt('cot-normal').enabled, selectedId !== 'model-f', model);
+        assert.equal(harness.prompt('head-2').enabled, argon, model);
+        assert.equal(harness.prompt('head-1').enabled, !argon, model);
+        assert.equal(Boolean(harness.excludeBody), parameters, model);
     }
+    // Manual prompt changes cannot become an alternative model source.
+    harness.prompt('model-glm').enabled = true;
+    harness.emitClick('.prompt-manager-toggle-action'); await harness.flushTimeouts();
+    assert.equal(harness.prompt('model-glm').enabled, false);
+    assert.equal(harness.prompt('model-f').enabled, true);
 
-    harness.setModel('pg-gemin-4-argon-抗截断');
-    inputBinding.at(-1)();
-    await harness.flushTimeouts();
-    assert.equal(harness.prompt('head-2').enabled, true);
-    assert.equal(harness.prompt('head-1').enabled, false);
+    // Unknown API names preserve the existing family and tail.
+    harness.setModel('unknown-model'); input(); await harness.flushTimeouts();
+    assert.equal(harness.prompt('model-f').enabled, true);
+    assert.equal(harness.prompt('cot-f').enabled, true);
+    assert.equal(harness.prompt('head-1').enabled, true);
     assert.equal(harness.excludeBody, '');
 });
 

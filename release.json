@@ -1,14 +1,14 @@
 {
   "presetId": "nue.sl.preset",
-  "version": "6.0.8",
-  "revision": 22,
-  "displayName": "[MoM]✩‧₊SL 6.0.8 @NUE",
+  "version": "6.0.9",
+  "revision": 23,
+  "displayName": "[MoM]✩‧₊SL 6.0.9 @NUE",
   "repository": "AYUUKI-K/SL-Preset",
   "branch": "main",
   "changelog": [
-    "修复在线更新改名后酒馆助手预设脚本总开关丢失；仅迁移原先已经开启的许可。",
-    "修复旧实例留在父页面的永久标记阻止新版脚本启动，卸载时清理当前实例监听器和定时器。",
-    "按酒馆助手标准化 id/启用状态处理新开启的模型分区，四选一与 Skip COT 联动独立于 API 口；4A 头部2，其他头部1，仅37/38Flash填写附加参数。"
+    "统一按 API 当前模型自动同步模型分区四选一、头部与 Skip COT 尾部；不再依赖手动黄标切换。",
+    "Gemini/GMN 名称含 Pro 时使用 GEMINI-P；其他 Gemini/GMN 使用 GEMINI-F 与 Skip COT-F；GLM/Claude 使用各自分区与普通 Skip COT；4A 头部2，其他头部1。",
+    "仅 Gemini 3.7/3.8 Flash 自动填写参数，4A 不填写；未知模型保留模型分区和尾部状态。"
   ],
   "requiredScriptIds": [
     "5785b764-ccc0-49e7-8f72-ada52a4ba84b",
