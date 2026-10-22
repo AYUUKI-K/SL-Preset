@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "presetId": "nue.sl.preset",
-  "version": "6.0.9",
-  "revision": 23,
-  "displayName": "[MoM]✩‧₊SL 6.0.9 @NUE",
+  "version": "6.0.10",
+  "revision": 24,
+  "displayName": "[MoM]✩‧₊SL 6.0.10 @NUE",
   "file": "dist/preset.json",
-  "sha256": "b8eff3bfc6c609dbf65e8e633eee86e9407a0a5c1b31b33f4876a17497472468",
+  "sha256": "fed5c8cfc87c9985a49b05a3571125f570a0ad8f4b7a4584859ec81441ff3689",
   "changelog": [
     "统一按 API 当前模型自动同步模型分区四选一、头部与 Skip COT 尾部；不再依赖手动黄标切换。",
     "Gemini/GMN 名称含 Pro 时使用 GEMINI-P；其他 Gemini/GMN 使用 GEMINI-F 与 Skip COT-F；GLM/Claude 使用各自分区与普通 Skip COT；4A 头部2，其他头部1。",
